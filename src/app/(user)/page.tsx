@@ -1,4 +1,4 @@
-import MainHome from "src/components/home/main.home";
+import MainHome from "src/components/Home/main.home";
 import { sendRequest } from "src/utils/api";
 
 

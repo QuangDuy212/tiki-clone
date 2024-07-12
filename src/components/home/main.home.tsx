@@ -10,10 +10,11 @@ import {
 import { useEffect, useState } from 'react';
 import '../../styles/home/main.home.scss';
 import { useRouter } from "next/navigation";
-import MainFilter from "./filter/main.filter";
+import MainFilter from "./Filter/main.filter";
 import { fetchListBookAction } from "src/utils/actions/home.actions";
 import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
+import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 
 interface IProps {
     categories: string[] | [];
@@ -21,8 +22,14 @@ interface IProps {
 
 const { Meta } = Card;
 const MainHome = (props: IProps) => {
+    // The `state` arg is correctly typed as `RootState` already
+    //REDUX: 
+    const user = useAppSelector((state) => state.user)
+    const dispatch = useAppDispatch()
 
+    //PROPS: 
     const { categories } = props;
+
     //STATE:
     const PAGE_SIZE = 8;
     const [listBook, setListBook] = useState<IBook[] | null>([]);
@@ -88,8 +95,6 @@ const MainHome = (props: IProps) => {
             }
         })
         if (res && res?.data) {
-            console.log(">>> check query: ", query)
-            console.log(">>> check res: ", res?.data?.result)
             setListBook(res?.data?.result);
             setLoading(false);
             setTotal(res.data.meta.total);
@@ -259,7 +264,7 @@ const MainHome = (props: IProps) => {
                                                 key={index}
                                             >
                                                 <Spin tip="Loading..." size="large" spinning={loading}>
-                                                    <div className='book' onClick={() => handleRedirectBook(item)}>
+                                                    <div className='book' >
                                                         <div
                                                             className='book__img'
                                                         >
@@ -269,7 +274,8 @@ const MainHome = (props: IProps) => {
                                                         </div>
                                                         <div
                                                             className='book__title'
-                                                            style={{ height: "60px" }}
+                                                            style={{ height: "60px", cursor: "pointer" }}
+                                                            onClick={() => handleRedirectBook(item)}
                                                         >
                                                             {item.mainText}
                                                         </div>

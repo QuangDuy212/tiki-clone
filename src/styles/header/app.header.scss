@@ -40,8 +40,11 @@
 
     &__content {
         &--icon {
-            font-size   : 24px;
-            margin-right: 5px;
+            font-size      : 24px;
+            margin-right   : 5px;
+            display        : flex;
+            justify-content: center;
+            align-items    : center;
         }
 
         &--name {
@@ -54,8 +57,7 @@
     }
 
     &.active {
-        color           : rgb(10, 104, 255);
-        background-color: rgba(0, 96, 255, 0.12);
+        color: rgb(10, 104, 255);
     }
 }
 
@@ -86,4 +88,21 @@
     display        : flex;
     justify-content: center;
     align-items    : center;
+}
+
+.search-input {
+    input {
+        height: 40px;
+    }
+
+    span {
+
+        .ant-input-search-button {
+            height: 40px;
+        }
+
+        .ant-btn-icon {
+            font-size: 20px;
+        }
+    }
 }

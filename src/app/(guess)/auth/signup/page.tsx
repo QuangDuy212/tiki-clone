@@ -1,4 +1,4 @@
-import AuthSignup from "src/components/signup/auth.signup";
+import AuthSignup from "src/components/Signup/auth.signup";
 
 export const metadata = {
     title: "Sign up",

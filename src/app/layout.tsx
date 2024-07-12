@@ -5,6 +5,7 @@ import AntdStyledComponentsRegistry from "src/lib/AntdStyledComponentsRegistry "
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/main.scss';
 import StyledComponentsRegistry from "src/lib/registry";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <AntdStyledComponentsRegistry>
-            {children}
-          </AntdStyledComponentsRegistry>
-        </StyledComponentsRegistry>
+        <StoreProvider>
+          <StyledComponentsRegistry>
+            <AntdStyledComponentsRegistry>
+              {children}
+            </AntdStyledComponentsRegistry>
+          </StyledComponentsRegistry>
+        </StoreProvider>
         <ToastContainer />
       </body>
     </html>

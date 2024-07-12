@@ -5,6 +5,8 @@ import { GithubOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify';
 import { sendRequest } from 'src/utils/api';
+import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
+import { login } from 'src/lib/features/user/userSlice';
 
 type FieldType = {
     username?: string;
@@ -15,8 +17,14 @@ type FieldType = {
 
 
 const AuthSignin = () => {
+    //REDUX:
+    const user = useAppSelector((state) => state.user)
+    const dispatch = useAppDispatch()
+
+    //LIBRARY: 
     const router = useRouter();
 
+    //METHODS: 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const { username, password } = values;
         const res = await sendRequest<IRes<IUser>>({
@@ -30,7 +38,8 @@ const AuthSignin = () => {
         })
         if (!res?.error) {
             router.push("/");
-            toast.success("Login success!")
+            toast.success("Login success!");
+            dispatch(login(res?.data));
         } else {
             toast.error(res?.error)
         }

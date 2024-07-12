@@ -1,17 +1,80 @@
 'use client';
 import '../../styles/header/app.header.scss';
-import { AudioOutlined, HomeOutlined, ShoppingCartOutlined, SmileOutlined } from '@ant-design/icons';
-import { Badge, Col, Divider, Input, Row, Space } from 'antd';
+import {
+    AudioOutlined, HomeOutlined,
+    ShoppingCartOutlined, SmileOutlined,
+    UserOutlined
+} from '@ant-design/icons';
+import { Avatar, Badge, Col, Divider, Image, Input, Row, Dropdown, Space } from 'antd';
 import type { SearchProps } from 'antd/es/input/Search';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
+import type { MenuProps } from 'antd';
+import { logout } from 'src/lib/features/user/userSlice';
+import { sendRequest } from 'src/utils/api';
+import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+
 
 
 const AppHeader = () => {
-
+    //STATE:
+    const [avatar, setAvatar] = useState<string>("");
+    //LIBRARY: 
     const router = useRouter();
     const { Search } = Input;
+
+    //REDUX: 
+    const user = useAppSelector((state) => state.user)
+    const dispatch = useAppDispatch();
+
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <span>Thông tin tài khoản</span>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <span>Đơn hàng của tôi</span>
+            ),
+        },
+        {
+            key: '3',
+            label: (
+                <span>Trung tâm hỗ trợ</span>
+            ),
+        },
+        {
+            key: '4',
+            label: (
+                <span onClick={() => handleLogOut()}>Đăng xuất </span>
+            ),
+        },
+
+    ];
+
+    //METHODS: 
+    // useEffect(() => {
+    //     setAvatar(user?.user?.avatar);
+    // }, [user])
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
+    const handleLogOut = async () => {
+        const res = await sendRequest<IRes<string>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`,
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${user?.access_token}`
+            }
+        })
+        if (res?.data) {
+            dispatch(logout());
+            toast.success("Log out success!")
+        }
+    }
     return (
         <>
             <div className="container"
@@ -37,11 +100,14 @@ const AppHeader = () => {
                                 <div
                                     className='search-input'
                                 >
-                                    <Search placeholder="Bạn tìm gì hôm nay" onSearch={onSearch} enterButton />
+                                    <Search placeholder="Bạn tìm gì hôm nay"
+                                        onSearch={onSearch}
+                                        enterButton
+                                    />
                                 </div>
                                 <div style={{ display: "flex", width: "350px", justifyContent: "right" }}>
                                     <div
-                                        className='nav-btn'
+                                        className='nav-btn active'
                                     >
                                         <span className='nav-btn__content--icon'>
                                             <HomeOutlined />
@@ -50,16 +116,48 @@ const AppHeader = () => {
                                             Trang chủ
                                         </span>
                                     </div>
-                                    <div
-                                        className='nav-btn'
-                                    >
-                                        <span className='nav-btn__content--icon'>
-                                            <SmileOutlined />
-                                        </span>
-                                        <span className='nav-btn__content--name'>
-                                            Tài khoản
-                                        </span>
-                                    </div>
+                                    {
+                                        user?.user?.id &&
+                                        <div
+                                            className='nav-btn'
+                                        >
+                                            <Dropdown menu={{ items }}>
+                                                <Space>
+                                                    <span className='nav-btn__content--icon'>
+                                                        {!user?.user?.avatar
+                                                            &&
+                                                            <Avatar size={30} icon={<UserOutlined />} />
+                                                        }
+                                                        {user?.user?.avatar
+                                                            &&
+                                                            <img
+                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${user?.user?.avatar}`}
+                                                                style={{ borderRadius: "50%", height: "30px", width: "30px" }}
+                                                            />
+                                                        }
+
+                                                    </span>
+                                                    <span className='nav-btn__content--name'>
+                                                        Tài khoản
+                                                    </span>
+
+                                                </Space>
+                                            </Dropdown>
+                                        </div>
+                                    }
+                                    {!user?.user?.id &&
+                                        <div
+                                            className='nav-btn'
+                                            onClick={() => router.push('/auth/signin')}
+                                        >
+                                            <span className='nav-btn__content--icon'>
+                                                <SmileOutlined />
+                                            </span>
+                                            <span className='nav-btn__content--name'>
+                                                Tài khoản
+                                            </span>
+                                        </div>
+                                    }
                                     <Divider type='vertical' style={{ width: "2px" }} />
                                     <div
                                         className='cart-btn'

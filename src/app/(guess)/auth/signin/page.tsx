@@ -1,6 +1,6 @@
 
 import { redirect } from "next/navigation";
-import AuthSignin from "src/components/signin/auth.signin"
+import AuthSignin from "src/components/Signin/auth.signin"
 
 export const metadata = {
     title: "Sign in",

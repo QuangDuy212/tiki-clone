@@ -1,0 +1,89 @@
+.container {
+    padding-right: 15px;
+    padding-left : 15px;
+    margin-right : auto;
+    margin-left  : auto;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        width: 1300px;
+    }
+}
+
+.nav-btn {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    font-size      : 14px;
+    padding        : 8px 16px;
+    border-radius  : 10px;
+    cursor         : pointer;
+
+    &__content {
+        &--icon {
+            font-size   : 24px;
+            margin-right: 5px;
+        }
+
+        &--name {
+            font-size: 14px;
+        }
+    }
+
+    &:hover {
+        background-color: rgba(39, 39, 42, 0.12);
+    }
+
+    &.active {
+        color           : rgb(10, 104, 255);
+        background-color: rgba(0, 96, 255, 0.12);
+    }
+}
+
+
+
+.cart-btn {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    padding        : 5px;
+    border-radius  : 10px;
+    cursor         : pointer;
+
+    &:hover {
+        background-color: rgba(0, 96, 255, 0.12);
+    }
+}
+
+
+.flex-center {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+}
+
+.search-input {
+    width          : 60%;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+}

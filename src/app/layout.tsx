@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import AppFooter from "src/components/footer/app.footer";
-import AppHeader from "src/components/header/app.header";
+import { ToastContainer } from "react-toastify";
+import AntdStyledComponentsRegistry from "src/lib/AntdStyledComponentsRegistry ";
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/main.scss';
+import StyledComponentsRegistry from "src/lib/registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppHeader />
-        {children}
-        <AppFooter />
+        <StyledComponentsRegistry>
+          <AntdStyledComponentsRegistry>
+            {children}
+          </AntdStyledComponentsRegistry>
+        </StyledComponentsRegistry>
+        <ToastContainer />
       </body>
     </html>
   );

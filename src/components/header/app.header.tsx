@@ -1,7 +1,7 @@
 'use client';
 import '../../styles/header/app.header.scss';
 import {
-    AudioOutlined, HomeOutlined,
+    AudioOutlined, CheckCircleFilled, HomeOutlined,
     ShoppingCartOutlined, SmileOutlined,
     UserOutlined
 } from '@ant-design/icons';
@@ -14,12 +14,15 @@ import { logout } from 'src/lib/features/user/userSlice';
 import { sendRequest } from 'src/utils/api';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
+import { RiRefund2Line } from "react-icons/ri";
+import { TbTruckReturn } from "react-icons/tb";
+import { LiaShippingFastSolid } from "react-icons/lia";
+import { MdDiscount } from "react-icons/md";
 
 
 
 const AppHeader = () => {
     //STATE:
-    const [avatar, setAvatar] = useState<string>("");
     //LIBRARY: 
     const router = useRouter();
     const { Search } = Input;
@@ -158,7 +161,9 @@ const AppHeader = () => {
                                             </span>
                                         </div>
                                     }
-                                    <Divider type='vertical' style={{ width: "2px" }} />
+                                    <div className='flex-center'>
+                                        <Divider type='vertical' style={{ width: "2px", height: "50%" }} />
+                                    </div>
                                     <div
                                         className='cart-btn'
                                     >
@@ -178,7 +183,61 @@ const AppHeader = () => {
 
 
             </div>
-            <Divider style={{ margin: "10px 0" }} />
+            <Divider style={{ margin: " 0" }} />
+            <div className='container'>
+                <div className='header-bottom'>
+                    <div style={{ display: "flex" }}>
+                        <span style={{ color: " #003EA1", fontSize: "14px", marginRight: "20px", fontWeight: 600 }}>
+                            Cam kết
+                        </span>
+                        <div className='flex-center'>
+                            <div className='flex-center'>
+                                <CheckCircleFilled style={{ fontSize: 15, color: "rgb(11, 116, 229)" }} />
+                                <span className='header-bottom__content'>
+                                    100% hàng thật
+                                </span>
+                            </div>
+                            <div className='flex-center'>
+                                <Divider type='vertical' style={{ width: "2px", height: "20px" }} />
+                            </div>
+                            <div className='flex-center'>
+                                <RiRefund2Line style={{ fontSize: 20, color: "rgb(11, 116, 229)" }} />
+                                <span className='header-bottom__content'>
+                                    Hoàn 200% nếu hàng giả
+                                </span>
+                            </div>
+                            <div className='flex-center'>
+                                <Divider type='vertical' style={{ width: "2px", height: "20px" }} />
+                            </div>
+                            <div className='flex-center'>
+                                <TbTruckReturn style={{ fontSize: 20, color: "rgb(11, 116, 229)" }} />
+                                <span className='header-bottom__content'>
+                                    30 ngày đổi trả
+                                </span>
+                            </div>
+                            <div className='flex-center'>
+                                <Divider type='vertical' style={{ width: "2px", height: "20px" }} />
+                            </div>
+                            <div className='flex-center'>
+                                <LiaShippingFastSolid style={{ fontSize: 20, color: "rgb(11, 116, 229)" }} />
+                                <span className='header-bottom__content'>
+                                    Giao nhanh 2h
+                                </span>
+                            </div>
+                            <div className='flex-center'>
+                                <Divider type='vertical' style={{ width: "2px", height: "20px" }} />
+                            </div>
+                            <div className='flex-center'>
+                                <MdDiscount style={{ fontSize: 20, color: "rgb(11, 116, 229)" }} />
+                                <span className='header-bottom__content'>
+                                    Giả siêu rẻ
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

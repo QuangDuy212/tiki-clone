@@ -1,6 +1,6 @@
 'use client';
-import { IoFilter } from "react-icons/io5";
-import { GrPowerReset } from "react-icons/gr";
+
+import MainFilter from "./Filter/main.filter";
 import {
     Button, Col, Form, Row, Checkbox,
     Divider, InputNumber, Rate, Card, Tabs,
@@ -10,7 +10,6 @@ import {
 import { useEffect, useState } from 'react';
 import '../../styles/home/main.home.scss';
 import { useRouter } from "next/navigation";
-import MainFilter from "./Filter/main.filter";
 import { fetchListBookAction } from "src/utils/actions/home.actions";
 import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
@@ -18,10 +17,10 @@ import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 
 interface IProps {
     categories: string[] | [];
+    children: React.ReactNode;
 }
 
-const { Meta } = Card;
-const MainHome = (props: IProps) => {
+const LayoutHomePage = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
     //REDUX: 
     const user = useAppSelector((state) => state.user)
@@ -205,91 +204,19 @@ const MainHome = (props: IProps) => {
         const slug = convertSlug(book.mainText);
         router.push(`/book/${slug}?id=${book._id}`)
     }
-
-
     return (
         <>
-            <div className="main-home ">
-                <div className='container '>
-                    <Row className='home' gutter={[18, 18]}>
-                        <Col lg={5} md={0} sm={0} xs={0} >
-                            <MainFilter
-                                categories={categories}
-                                setFilter={setFilter}
-                            />
-                        </Col>
-                        <Col lg={19} md={24} sm={24} xs={24}>
-                            <Row>
-                                <Col xl={0} lg={0} md={24} sm={24} xs={24}>
-                                    <Button style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-                                        type='primary'
-                                        onClick={() => { setIsOpenFilter(true) }}
-                                    >
-                                        Bộ lọc
-                                    </Button>
-                                </Col>
-                                <Col md={24}>
-                                    <Tabs defaultActiveKey="1" items={items} onChange={(value) => setSortQuery(value)} />
-                                </Col>
+            <div style={{ display: "flex" }}>
+                <div>
+                    <MainFilter
+                        categories={categories}
+                        setFilter={setFilter}
+                    />
+                </div>
+                <div>
 
-                            </Row>
-                            <Row gutter={[16, 16]}>
-                                {listBook && listBook.length > 0 &&
-                                    listBook.map((item, index) => {
-                                        return (
-                                            <Col xxl={4} xl={6} lg={8} md={8} sm={12} xs={24}
-                                                key={index}
-                                            >
-                                                <Spin tip="Loading..." size="large" spinning={loading}>
-                                                    <div className='book' >
-                                                        <div
-                                                            className='book__img'
-                                                        >
-                                                            <Image
-                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/book/${item.thumbnail}`}
-                                                            />
-                                                        </div>
-                                                        <div
-                                                            className='book__title'
-                                                            style={{ height: "60px", cursor: "pointer" }}
-                                                            onClick={() => handleRedirectBook(item)}
-                                                        >
-                                                            {item.mainText}
-                                                        </div>
-                                                        <div className='book__price'>
-                                                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
-                                                        </div>
-                                                        <div
-                                                            className='book__rate'
-                                                        >
-                                                            <Rate disabled defaultValue={5} style={{ fontSize: '10px' }} />
-                                                            <span>Đã bán {item.sold}</span>
-                                                        </div>
-                                                    </div>
-                                                </Spin>
-                                            </Col>
-
-                                        )
-                                    })
-                                }
-                            </Row>
-                            <Divider />
-                            <Pagination
-                                current={current}
-                                total={total}
-                                pageSize={8}
-                                onChange={(p, s) => handleOnChangePage({ current: p, pageSize: s })}
-                                responsive
-                                style={{
-                                    display: "flex", justifyContent: "center", alignItems: "center"
-                                }}
-                            />
-                        </Col>
-                    </Row >
                 </div>
             </div>
         </>
     )
 }
-
-export default MainHome;

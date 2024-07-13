@@ -106,3 +106,17 @@
         }
     }
 }
+
+.header-bottom {
+    padding: 12px 0;
+
+    &__icon {
+        color    : rgb(11, 116, 229);
+        font-size: 15;
+    }
+
+    &__content {
+        font-size  : 12px;
+        margin-left: 6px;
+    }
+}

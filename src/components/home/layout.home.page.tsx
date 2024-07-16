@@ -7,7 +7,7 @@ import {
     Pagination, Spin, Drawer,
     Image
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { Children, useEffect, useState } from 'react';
 import '../../styles/home/main.home.scss';
 import { useRouter } from "next/navigation";
 import { fetchListBookAction } from "src/utils/actions/home.actions";
@@ -23,11 +23,11 @@ interface IProps {
 const LayoutHomePage = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
     //REDUX: 
-    const user = useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
 
     //PROPS: 
-    const { categories } = props;
+    const { categories, children } = props;
 
     //STATE:
     const PAGE_SIZE = 8;
@@ -214,7 +214,12 @@ const LayoutHomePage = (props: IProps) => {
                     />
                 </div>
                 <div>
-
+                    <div>
+                        <Tabs defaultActiveKey="1" items={items} onChange={(value) => setSortQuery(value)} />
+                    </div>
+                    <div>
+                        {children}
+                    </div>
                 </div>
             </div>
         </>

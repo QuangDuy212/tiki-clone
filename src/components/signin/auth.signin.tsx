@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify';
 import { sendRequest } from 'src/utils/api';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
-import { login } from 'src/lib/features/user/userSlice';
+import { doLogin } from 'src/lib/features/account/accountSlice';
 
 type FieldType = {
     username?: string;
@@ -18,7 +18,7 @@ type FieldType = {
 
 const AuthSignin = () => {
     //REDUX:
-    const user = useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
 
     //LIBRARY: 
@@ -31,15 +31,15 @@ const AuthSignin = () => {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
             method: "POST",
             body: {
-
                 username: username,
                 password: password
             },
         })
-        if (!res?.error) {
+        if (!res?.error && res?.data) {
             router.push("/");
             toast.success("Login success!");
-            dispatch(login(res?.data));
+            dispatch(doLogin(res?.data));
+            localStorage.setItem("access_token", res.data.access_token);
         } else {
             toast.error(res?.error)
         }

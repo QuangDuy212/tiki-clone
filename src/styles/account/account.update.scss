@@ -1,0 +1,46 @@
+.nav-container {
+    .nav-item {
+        display          : flex;
+        -webkit-box-align: center;
+        align-items      : center;
+        padding          : 7px 18px;
+        color            : rgb(74, 74, 74);
+
+        &:hover {
+            cursor          : pointer;
+            background-color: rgb(235, 235, 240);
+        }
+
+        &.active {
+            background-color: rgb(235, 235, 240);
+
+        }
+    }
+
+}
+
+.account-update {
+    background-color: rgb(246, 245, 250);
+
+    .update-container {
+        background-color: #fff;
+        border-radius   : 10px;
+        padding         : 20px;
+        width           : 100%;
+
+
+        .update-title {
+            font-size  : 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color      : rgb(100, 100, 109);
+        }
+
+        .avatar {
+            display        : flex;
+            justify-content: center;
+            align-items    : center;
+            flex-direction : column;
+        }
+    }
+}

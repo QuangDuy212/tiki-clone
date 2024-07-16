@@ -1,7 +1,7 @@
 'use client';
 import '../../styles/header/app.header.scss';
 import {
-    AudioOutlined, CheckCircleFilled, HomeOutlined,
+    AudioOutlined, CheckCircleFilled, HomeFilled, HomeOutlined,
     ShoppingCartOutlined, SmileOutlined,
     UserOutlined
 } from '@ant-design/icons';
@@ -10,7 +10,6 @@ import type { SearchProps } from 'antd/es/input/Search';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
 import type { MenuProps } from 'antd';
-import { logout } from 'src/lib/features/user/userSlice';
 import { sendRequest } from 'src/utils/api';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
@@ -18,24 +17,26 @@ import { RiRefund2Line } from "react-icons/ri";
 import { TbTruckReturn } from "react-icons/tb";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdDiscount } from "react-icons/md";
+import { doLogout } from 'src/lib/features/account/accountSlice';
 
 
 
 const AppHeader = () => {
     //STATE:
+    const [activePage, setActivePage] = useState<string>("home")
     //LIBRARY: 
     const router = useRouter();
     const { Search } = Input;
 
     //REDUX: 
-    const user = useAppSelector((state) => state.user)
+    const account = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch();
 
     const items: MenuProps['items'] = [
         {
             key: '1',
             label: (
-                <span>Thông tin tài khoản</span>
+                <span onClick={() => { router.push("/customer/account"); setActivePage("customer") }}>Thông tin tài khoản</span>
             ),
         },
         {
@@ -60,9 +61,10 @@ const AppHeader = () => {
     ];
 
     //METHODS: 
-    // useEffect(() => {
-    //     setAvatar(user?.user?.avatar);
-    // }, [user])
+    useEffect(() => {
+        setActivePage("home")
+        console.log(">>> check account: ", account)
+    }, [])
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
     const handleLogOut = async () => {
@@ -70,12 +72,13 @@ const AppHeader = () => {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`,
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${user?.access_token}`
+                // "Authorization": `Bearer ${account?.access_token}`
             }
         })
         if (res?.data) {
-            dispatch(logout());
-            toast.success("Log out success!")
+            dispatch(doLogout());
+            toast.success("Log out success!");
+            localStorage.removeItem("access_token");
         }
     }
     return (
@@ -86,7 +89,7 @@ const AppHeader = () => {
                 <Row >
                     <Col span={2} >
                         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", cursor: "pointer" }}
-                            onClick={() => router.push('/')}
+                            onClick={() => { router.push('/'); setActivePage('home') }}
                         >
                             <img src="https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png" alt="tiki-logo" width="96" height="40" />
                             <span style={{ color: "rgb(0, 62, 161)", textAlign: "center" }}>Tốt &amp; Nhanh</span>
@@ -110,31 +113,32 @@ const AppHeader = () => {
                                 </div>
                                 <div style={{ display: "flex", width: "350px", justifyContent: "right" }}>
                                     <div
-                                        className='nav-btn active'
+                                        className={`nav-btn ${activePage === 'home' ? "active" : ""}`}
+                                        onClick={() => router.push("/")}
                                     >
                                         <span className='nav-btn__content--icon'>
-                                            <HomeOutlined />
+                                            <HomeFilled />
                                         </span>
                                         <span className='nav-btn__content--name'>
                                             Trang chủ
                                         </span>
                                     </div>
                                     {
-                                        user?.user?.id &&
+                                        account?.isAuthenticated &&
                                         <div
-                                            className='nav-btn'
+                                            className={`nav-btn ${activePage === 'customer' ? "active" : ""}`}
                                         >
-                                            <Dropdown menu={{ items }}>
+                                            <Dropdown menu={{ items }} placement="bottomRight">
                                                 <Space>
                                                     <span className='nav-btn__content--icon'>
-                                                        {!user?.user?.avatar
+                                                        {!account?.user?.avatar
                                                             &&
                                                             <Avatar size={30} icon={<UserOutlined />} />
                                                         }
-                                                        {user?.user?.avatar
+                                                        {account?.user?.avatar
                                                             &&
                                                             <img
-                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${user?.user?.avatar}`}
+                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${account?.user?.avatar}`}
                                                                 style={{ borderRadius: "50%", height: "30px", width: "30px" }}
                                                             />
                                                         }
@@ -148,9 +152,9 @@ const AppHeader = () => {
                                             </Dropdown>
                                         </div>
                                     }
-                                    {!user?.user?.id &&
+                                    {!account?.isAuthenticated &&
                                         <div
-                                            className='nav-btn'
+                                            className={`nav-btn ${activePage === 'customer' ? "active" : ""}`}
                                             onClick={() => router.push('/auth/signin')}
                                         >
                                             <span className='nav-btn__content--icon'>

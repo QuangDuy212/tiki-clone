@@ -15,6 +15,7 @@ import { fetchListBookAction } from "src/utils/actions/home.actions";
 import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
 import { useAppDispatch, useAppSelector } from "src/lib/hooks";
+import { doGetAccount } from "src/lib/features/account/accountSlice";
 
 interface IProps {
     categories: string[] | [];
@@ -24,7 +25,7 @@ const { Meta } = Card;
 const MainHome = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
     //REDUX: 
-    const user = useAppSelector((state) => state.user)
+    const user = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
 
     //PROPS: 
@@ -58,7 +59,7 @@ const MainHome = (props: IProps) => {
             if (categories)
                 setListCategory(categories);
         }
-
+        fetchAccount();
         fetchCategory();
     }, [])
 
@@ -67,6 +68,14 @@ const MainHome = (props: IProps) => {
     useEffect(() => {
         fetchBook();
     }, [current, pageSize, sortQuery, filter]);
+
+    const fetchAccount = async () => {
+        const res = await sendRequest<IRes<IUser>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/account`,
+            method: "GET",
+        })
+        dispatch(doGetAccount(res?.data?.user))
+    }
 
     const fetchBook = async () => {
         setLoading(true);

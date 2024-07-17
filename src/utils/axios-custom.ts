@@ -8,7 +8,10 @@ const instance = axios.create({
     baseURL: baseUrl
 });
 
-instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem("access_token")}` }
+// if (typeof window !== 'undefined' && window && window.localStorage &&
+//     window.localStorage.getItem('access_token')
+// )
+//     instance.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem("access_token")}` }
 
 const handleRefreshToken = async () => {
     // const res = await instance.get('/api/v1/auth/refresh');
@@ -24,10 +27,10 @@ const handleRefreshToken = async () => {
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
-    if (typeof window !== 'undefined' && window && window.localStorage &&
-        window.localStorage.getItem('access_token')
-    )
-        config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('access_token');
+    // if (typeof window !== 'undefined' && window && window.localStorage &&
+    //     window.localStorage.getItem('access_token')
+    // )
+    //     config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('access_token');
     // Do something before request is sent
     return config;
 }, function (error) {

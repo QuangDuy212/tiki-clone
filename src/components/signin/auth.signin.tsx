@@ -8,6 +8,7 @@ import { sendRequest } from 'src/utils/api';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
 import { doLogin } from 'src/lib/features/account/accountSlice';
 import { callLogin } from 'src/services/api';
+import { signIn } from 'next-auth/react';
 
 type FieldType = {
     username?: string;
@@ -28,20 +29,15 @@ const AuthSignin = () => {
     //METHODS: 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType) => {
         const { username, password } = values;
-        // const res = await sendRequest<IRes<IUser>>({
-        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
-        //     method: "POST",
-        //     body: {
-        //         username: username,
-        //         password: password
-        //     },
-        // })
-        const res = await callLogin(username, password);
-        if (!res?.error && res?.data) {
+        const data = { username, password }
+        const res = await signIn('credentials', {
+            username: username,
+            password: password,
+            redirect: false,
+        });
+        if (res?.ok) {
             router.push("/");
             toast.success("Login success!");
-            dispatch(doLogin(res?.data));
-            localStorage.setItem("access_token", res.data.access_token);
         } else {
             toast.error(res?.error)
         }

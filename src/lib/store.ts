@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterSlice from './features/counter/counterSlice'
-import accountSlice from './features/account/accountSlice'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             counter: counterSlice,
-            account: accountSlice,
         },
     })
 }

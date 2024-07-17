@@ -16,6 +16,7 @@ import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
 import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 import { doGetAccount } from "src/lib/features/account/accountSlice";
+import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
 
 interface IProps {
     categories: string[] | [];
@@ -70,10 +71,11 @@ const MainHome = (props: IProps) => {
     }, [current, pageSize, sortQuery, filter]);
 
     const fetchAccount = async () => {
-        const res = await sendRequest<IRes<IUser>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/account`,
-            method: "GET",
-        })
+        // const res = await sendRequest<IRes<IUser>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/account`,
+        //     method: "GET",
+        // })
+        const res = await callFetchAccount();
         dispatch(doGetAccount(res?.data?.user))
     }
 
@@ -96,13 +98,14 @@ const MainHome = (props: IProps) => {
         if (filter) {
             query += filter
         }
-        const res = await sendRequest<IRes<IModelPaginate<IBook>>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/book${query}`,
-            method: "GET",
-            nextOption: {
-                next: { tags: ['get-list-book'] }
-            }
-        })
+        // const res = await sendRequest<IRes<IModelPaginate<IBook>>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/book${query}`,
+        //     method: "GET",
+        //     nextOption: {
+        //         next: { tags: ['get-list-book'] }
+        //     }
+        // })
+        const res = await callGetBookWithPaginate(query);
         if (res && res?.data) {
             setListBook(res?.data?.result);
             setLoading(false);

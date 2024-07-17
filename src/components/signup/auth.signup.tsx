@@ -5,6 +5,7 @@ import { GithubOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify';
 import { sendRequest } from 'src/utils/api';
+import { callRegister } from 'src/services/api';
 
 type FieldType = {
     fullName: string;
@@ -20,16 +21,17 @@ const AuthSignup = () => {
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const { fullName, email, password, phone } = values;
-        const res = await sendRequest<IRes<IUser>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/register`,
-            method: "POST",
-            body: {
-                email: email,
-                fullName: fullName,
-                password: password,
-                phone: phone
-            },
-        })
+        // const res = await sendRequest<IRes<IUser>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/register`,
+        //     method: "POST",
+        //     body: {
+        //         email: email,
+        //         fullName: fullName,
+        //         password: password,
+        //         phone: phone
+        //     },
+        // })
+        const res = await callRegister(fullName, email, password, phone);
         if (!res?.error) {
             router.push("/auth/signin");
             toast.success("Register success!")

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { sendRequest } from 'src/utils/api';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
 import { doLogin } from 'src/lib/features/account/accountSlice';
+import { callLogin } from 'src/services/api';
 
 type FieldType = {
     username?: string;
@@ -25,16 +26,17 @@ const AuthSignin = () => {
     const router = useRouter();
 
     //METHODS: 
-    const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+    const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType) => {
         const { username, password } = values;
-        const res = await sendRequest<IRes<IUser>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
-            method: "POST",
-            body: {
-                username: username,
-                password: password
-            },
-        })
+        // const res = await sendRequest<IRes<IUser>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
+        //     method: "POST",
+        //     body: {
+        //         username: username,
+        //         password: password
+        //     },
+        // })
+        const res = await callLogin(username, password);
         if (!res?.error && res?.data) {
             router.push("/");
             toast.success("Login success!");

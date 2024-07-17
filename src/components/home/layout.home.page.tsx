@@ -14,6 +14,7 @@ import { fetchListBookAction } from "src/utils/actions/home.actions";
 import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
 import { useAppDispatch, useAppSelector } from "src/lib/hooks";
+import { callGetBookWithPaginate } from "src/services/api";
 
 interface IProps {
     categories: string[] | [];
@@ -86,13 +87,14 @@ const LayoutHomePage = (props: IProps) => {
         if (filter) {
             query += filter
         }
-        const res = await sendRequest<IRes<IModelPaginate<IBook>>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/book${query}`,
-            method: "GET",
-            nextOption: {
-                next: { tags: ['get-list-book'] }
-            }
-        })
+        // const res = await sendRequest<IRes<IModelPaginate<IBook>>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/book${query}`,
+        //     method: "GET",
+        //     nextOption: {
+        //         next: { tags: ['get-list-book'] }
+        //     }
+        // })
+        const res = await callGetBookWithPaginate(query);
         if (res && res?.data) {
             setListBook(res?.data?.result);
             setLoading(false);

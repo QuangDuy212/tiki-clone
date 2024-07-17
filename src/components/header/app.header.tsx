@@ -18,6 +18,7 @@ import { TbTruckReturn } from "react-icons/tb";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdDiscount } from "react-icons/md";
 import { doLogout } from 'src/lib/features/account/accountSlice';
+import { callLogout } from 'src/services/api';
 
 
 
@@ -68,13 +69,14 @@ const AppHeader = () => {
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
     const handleLogOut = async () => {
-        const res = await sendRequest<IRes<string>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`,
-            method: "POST",
-            headers: {
-                // "Authorization": `Bearer ${account?.access_token}`
-            }
-        })
+        // const res = await sendRequest<IRes<string>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`,
+        //     method: "POST",
+        //     headers: {
+        //         // "Authorization": `Bearer ${account?.access_token}`
+        //     }
+        // })
+        const res = await callLogout();
         if (res?.data) {
             dispatch(doLogout());
             toast.success("Log out success!");

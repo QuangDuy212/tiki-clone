@@ -1,5 +1,6 @@
 import { Button, Col, Form, Input, Row, message, notification } from "antd";
 import { useAppSelector } from "src/lib/hooks";
+import { callChangePassword } from "src/services/api";
 import { sendRequest } from "src/utils/api";
 
 interface IProps {
@@ -15,16 +16,17 @@ const ChangePassword = (props: IProps) => {
 
     const onFinish = async (values: { email: string, oldpass: string, newpass: string }) => {
         const { email, oldpass, newpass } = values;
-        const res = await sendRequest<IRes<string>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/change-password`,
-            method: "PUT",
-            headers: {
-                // "Authorization": `Bearer ${account?.access_token}`
-            },
-            body: {
-                email, oldpass, newpass
-            }
-        })
+        // const res = await sendRequest<IRes<string>>({
+        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/change-password`,
+        //     method: "PUT",
+        //     headers: {
+        //         // "Authorization": `Bearer ${account?.access_token}`
+        //     },
+        //     body: {
+        //         email, oldpass, newpass
+        //     }
+        // })
+        const res = await callChangePassword(email, oldpass, newpass);
         if (res?.statusCode === 201) {
             message.success("Cập nhật thành công!");
             form1.setFieldValue("oldpass", "")

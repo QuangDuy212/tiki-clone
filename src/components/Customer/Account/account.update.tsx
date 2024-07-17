@@ -13,6 +13,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoNewspaperSharp } from "react-icons/io5";
 import { BiSupport } from "react-icons/bi";
 import ChangePassword from "./change.password"
+import { callUpdateAvatar, callUpdateUser } from "src/services/api"
 const AccountUpdate = () => {
 
     //STATE:
@@ -59,14 +60,7 @@ const AccountUpdate = () => {
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const { _id, fullName, phone } = values;
         const data = { _id, fullName, phone, avatar: avatar }
-        const res = await sendRequest<IRes<string>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user`,
-            method: "PUT",
-            headers: {
-                // "Authorization": `Bearer ${account?.access_token}`
-            },
-            body: data
-        })
+        const res = await callUpdateUser(_id, fullName, phone)
         if (res && res?.data && res?.statusCode === 200) {
             dispatch(doUpdateUser(data))
             message.success("Cập nhật thông tin thành công!");
@@ -88,16 +82,19 @@ const AccountUpdate = () => {
         if (file) {
             const bodyFormData = new FormData();
             bodyFormData.append('fileImg', file);
-            const res = await sendRequestFile<IRes<any>>({
-                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/file/upload`,
-                method: "POST",
-                body: bodyFormData,
-                headers: {
-                    // "Authorization": `Bearer ${account?.access_token}`,
-                    "upload-type": "avatar",
-                },
-            })
-            console.log(">>> check res: ", res)
+            // const res = await sendRequestFile<IRes<any>>({
+            //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/file/upload`,
+            //     method: "POST",
+            //     body: bodyFormData,
+            //     headers: {
+            //         // "Authorization": `Bearer ${account?.access_token}`,
+            //         "upload-type": "avatar",
+            //     },
+            // })
+
+            const res = await callUpdateAvatar(file)
+            // console.log(">>> check res: ", res)
+
             if (res?.data) {
                 setAvatar(res?.data?.fileUploaded)
                 onSuccess('ok');

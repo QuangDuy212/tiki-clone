@@ -2,19 +2,19 @@ import { RcFile } from 'antd/es/upload';
 import axios from '../utils/axios-custom'
 
 export const callRegister = (fullName: string, email: string, password: string, phone: string) => {
-    return axios.post('/api/v1/user/register', { fullName, email, password, phone });
+    return axios.post<any, IRes<IUser>>('/api/v1/user/register', { fullName, email, password, phone });
 }
 
-export const callLogin = (username: string, password: string) => {
-    return axios.post('/api/v1/auth/login', { username, password });
+export const callLogin = (username: string | undefined, password: string | undefined) => {
+    return axios.post<any, IRes<IUser>>('/api/v1/auth/login', { username, password });
 }
 
 export const callFetchAccount = () => {
-    return axios.get("/api/v1/auth/account");
+    return axios.get<any, IRes<IUser>>("/api/v1/auth/account");
 }
 
 export const callLogout = () => {
-    return axios.post("/api/v1/auth/logout");
+    return axios.post<any, IRes<string>>("/api/v1/auth/logout");
 }
 
 export const callGetUserWithPaginate = (query: string) => {
@@ -25,8 +25,8 @@ export const callBulkCreateUser = (data: IBulkCreate[] | []) => {
     return axios.post(`/api/v1/user/bulk-create`, data);
 }
 
-export const callUpdateUser = (_id: string, fullName: string, phone: string) => {
-    return axios.put(`/api/v1/user`, { _id, fullName, phone });
+export const callUpdateUser = (_id: string | undefined, fullName: string | undefined, phone: string | undefined) => {
+    return axios.put<IRes<IUser>, IRes<IUser>>(`/api/v1/user`, { _id, fullName, phone });
 }
 
 export const callDeleteUser = (id: string) => {
@@ -34,7 +34,7 @@ export const callDeleteUser = (id: string) => {
 }
 
 export const callGetBookWithPaginate = (query: string) => {
-    return axios.get(`/api/v1/book${query}`);
+    return axios.get<IRes<IModelPaginate<IBook>>, IRes<IModelPaginate<IBook>>>(`/api/v1/book${query}`);
 }
 
 export const callFetchCategory = () => {
@@ -104,7 +104,7 @@ export const callUpdateInfo = (_id: string, fullName: string, phone: string, ava
 }
 
 export const callChangePassword = (email: string, oldpass: string, newpass: string) => {
-    return axios.post(`/api/v1/user/change-password`, {
+    return axios.post<IRes<IUser>, IRes<IUser>>(`/api/v1/user/change-password`, {
         email, oldpass, newpass
     })
 }

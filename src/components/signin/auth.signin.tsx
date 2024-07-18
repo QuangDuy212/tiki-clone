@@ -20,7 +20,6 @@ type FieldType = {
 
 const AuthSignin = () => {
     //REDUX:
-    const user = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
 
     //LIBRARY: 

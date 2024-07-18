@@ -38,6 +38,14 @@ declare global {
             "id": string;
         }
     }
+    interface IUserInfo {
+        "email": string;
+        "phone": string;
+        "fullName": string;
+        "role": string;
+        "avatar": string;
+        "id": string;
+    }
     interface IBook {
         "_id": string;
         "thumbnail": string;

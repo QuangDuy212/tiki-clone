@@ -9,13 +9,26 @@ export const callLogin = (username: string | undefined, password: string | undef
     return axios.post<any, IRes<IUser>>('/api/v1/auth/login', { username, password });
 }
 
-export const callFetchAccount = () => {
-    return axios.get<any, IRes<IUser>>("/api/v1/auth/account");
-
+export const callFetchAccount = (access_token: string) => {
+    // return axios.get("/api/v1/auth/account");
+    return axios<any, IRes<IUser>>({
+        method: 'get',
+        url: '/api/v1/auth/account',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        }
+    });
 }
 
-export const callLogout = () => {
-    return axios.post<any, IRes<string>>("/api/v1/auth/logout");
+export const callLogout = (access_token: string) => {
+    // return axios.post<any, IRes<string>>("/api/v1/auth/logout");
+    return axios<any, IRes<IUser>>({
+        method: 'post',
+        url: '/api/v1/auth/logout',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        }
+    });
 }
 
 export const callGetUserWithPaginate = (query: string) => {
@@ -26,8 +39,19 @@ export const callBulkCreateUser = (data: IBulkCreate[] | []) => {
     return axios.post(`/api/v1/user/bulk-create`, data);
 }
 
-export const callUpdateUser = (_id: string | undefined, fullName: string | undefined, phone: string | undefined) => {
-    return axios.put<IRes<IUser>, IRes<IUser>>(`/api/v1/user`, { _id, fullName, phone });
+export const callUpdateUser = (_id: string | undefined,
+    fullName: string | undefined, phone: string | undefined, access_token: string) => {
+    // return axios.put<IRes<IUser>, IRes<IUser>>(`/api/v1/user`, { _id, fullName, phone });
+    return axios<IRes<IUser>, IRes<IUser>>({
+        method: 'put',
+        url: "/api/v1/user",
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+        data: {
+            _id, fullName, phone
+        },
+    });
 }
 
 export const callDeleteUser = (id: string) => {

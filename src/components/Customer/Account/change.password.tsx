@@ -1,4 +1,5 @@
 import { Button, Col, Form, Input, Row, message, notification } from "antd";
+import { useSession } from "next-auth/react";
 import { useAppSelector } from "src/lib/hooks";
 import { callChangePassword } from "src/services/api";
 import { sendRequest } from "src/utils/api";
@@ -9,23 +10,13 @@ interface IProps {
 
 const ChangePassword = (props: IProps) => {
     // REDUX:
-    const account = useAppSelector((state) => state.account);
 
     //LIBRARY:
     const [form1] = Form.useForm();
+    const { data: session } = useSession()
 
     const onFinish = async (values: { email: string, oldpass: string, newpass: string }) => {
         const { email, oldpass, newpass } = values;
-        // const res = await sendRequest<IRes<string>>({
-        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/change-password`,
-        //     method: "PUT",
-        //     headers: {
-        //         // "Authorization": `Bearer ${account?.access_token}`
-        //     },
-        //     body: {
-        //         email, oldpass, newpass
-        //     }
-        // })
         const res = await callChangePassword(email, oldpass, newpass);
         if (res?.statusCode === 201) {
             message.success("Cập nhật thành công!");
@@ -62,7 +53,7 @@ const ChangePassword = (props: IProps) => {
                                 label="Email"
                                 name="email"
                                 rules={[{ required: true, message: 'Không được để trống!' }]}
-                                initialValue={account?.user?.email}
+                                initialValue={session?.user?.email}
 
                             >
                                 <Input disabled />

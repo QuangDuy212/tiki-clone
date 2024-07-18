@@ -7,13 +7,13 @@ import { RcFile } from "antd/es/upload"
 import { useEffect, useState } from "react"
 import { doUpdateUser } from "src/lib/features/account/accountSlice"
 import { useAppDispatch, useAppSelector } from "src/lib/hooks"
-import { sendRequest, sendRequestFile } from "src/utils/api";
 import '../../../styles/account/account.update.scss'
 import { FaUserCircle } from "react-icons/fa";
 import { IoNewspaperSharp } from "react-icons/io5";
 import { BiSupport } from "react-icons/bi";
 import ChangePassword from "./change.password"
 import { callUpdateAvatar, callUpdateUser } from "src/services/api"
+import { useSession } from "next-auth/react"
 const AccountUpdate = () => {
 
     //STATE:
@@ -21,11 +21,11 @@ const AccountUpdate = () => {
     const [activeTab, setActiveTab] = useState<string>("");
 
     //REDUX: 
-    const account = useAppSelector((state) => state.account);
     const dispatch = useAppDispatch();
 
     //LIBRARY: 
     const [form] = Form.useForm();
+    const { data: session } = useSession()
 
     //TYPES: 
     type FieldType = {
@@ -40,8 +40,8 @@ const AccountUpdate = () => {
     //METHODS: 
 
     useEffect(() => {
-        if (account?.user?.avatar) {
-            setAvatar(account?.user?.avatar)
+        if (session?.user?.avatar) {
+            setAvatar(session?.user?.avatar)
         }
 
         let url = window.location.pathname;
@@ -54,15 +54,15 @@ const AccountUpdate = () => {
         else if (url === '/customer/help-center') {
             setActiveTab("help-center");
         }
+        console.log(">>> check session: ", session);
 
-    }, [account]);
+    }, [session]);
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const { _id, fullName, phone } = values;
-        const data = { _id, fullName, phone, avatar: avatar }
-        const res = await callUpdateUser(_id, fullName, phone)
+        const res = await callUpdateUser(_id, fullName, phone, session?.access_token as string)
         if (res && res?.data && res?.statusCode === 200) {
-            dispatch(doUpdateUser(data))
+            console.log(">>> update ok")
             message.success("Cập nhật thông tin thành công!");
             localStorage.removeItem("access_token");
         }
@@ -82,18 +82,8 @@ const AccountUpdate = () => {
         if (file) {
             const bodyFormData = new FormData();
             bodyFormData.append('fileImg', file);
-            // const res = await sendRequestFile<IRes<any>>({
-            //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/file/upload`,
-            //     method: "POST",
-            //     body: bodyFormData,
-            //     headers: {
-            //         // "Authorization": `Bearer ${account?.access_token}`,
-            //         "upload-type": "avatar",
-            //     },
-            // })
 
             const res = await callUpdateAvatar(file)
-            // console.log(">>> check res: ", res)
 
             if (res?.data) {
                 setAvatar(res?.data?.fileUploaded)
@@ -109,10 +99,6 @@ const AccountUpdate = () => {
     }
     const prop = {
         name: 'file',
-        // action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        // headers: {
-        //     authorization: 'authorization-text',
-        // },
         showUploadList: false,
         mutiple: false,
         maxCount: 1,
@@ -145,7 +131,7 @@ const AccountUpdate = () => {
                                         />
                                         <span style={{ fontSize: "14px", display: "flex", flexDirection: "column" }}>
                                             Tài khoản của
-                                            <span style={{ fontSize: '18px' }}>{account?.user?.fullName}</span>
+                                            <span style={{ fontSize: '18px' }}>{session?.user?.fullName}</span>
                                         </span>
 
                                     </div>
@@ -205,7 +191,8 @@ const AccountUpdate = () => {
                                                     label="ID"
                                                     name="_id"
                                                     rules={[{ required: true, message: 'Không được để trống!' }]}
-                                                    initialValue={account?.user?.id}
+                                                    initialValue={session?.user?.id}
+
                                                     hidden
                                                 >
                                                     <Input disabled />
@@ -214,7 +201,7 @@ const AccountUpdate = () => {
                                                     label="Email"
                                                     name="email"
                                                     rules={[{ required: true, message: 'Không được để trống!' }]}
-                                                    initialValue={account?.user?.email}
+                                                    initialValue={session?.user?.email}
                                                 >
                                                     <Input disabled />
                                                 </Form.Item>
@@ -223,7 +210,7 @@ const AccountUpdate = () => {
                                                     label="Tên hiển thị"
                                                     name="fullName"
                                                     rules={[{ required: true, message: 'Không được để trống!' }]}
-                                                    initialValue={account?.user?.fullName}
+                                                    initialValue={session?.user?.fullName}
                                                 >
                                                     <Input />
                                                 </Form.Item>
@@ -231,7 +218,7 @@ const AccountUpdate = () => {
                                                     label="Số điện thoại"
                                                     name="phone"
                                                     rules={[{ required: true, message: 'Không được để trống!' }]}
-                                                    initialValue={account?.user?.phone}
+                                                    initialValue={session?.user?.phone}
                                                 >
                                                     <Input />
                                                 </Form.Item>

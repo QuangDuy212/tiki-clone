@@ -10,7 +10,6 @@ import type { SearchProps } from 'antd/es/input/Search';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from 'src/lib/hooks';
 import type { MenuProps } from 'antd';
-import { sendRequest } from 'src/utils/api';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { RiRefund2Line } from "react-icons/ri";
@@ -19,6 +18,7 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdDiscount } from "react-icons/md";
 import { doLogout } from 'src/lib/features/account/accountSlice';
 import { callLogout } from 'src/services/api';
+import { signOut, useSession } from 'next-auth/react';
 
 
 
@@ -28,9 +28,9 @@ const AppHeader = () => {
     //LIBRARY: 
     const router = useRouter();
     const { Search } = Input;
+    const { data: session } = useSession()
 
     //REDUX: 
-    const account = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch();
 
     const items: MenuProps['items'] = [
@@ -64,21 +64,13 @@ const AppHeader = () => {
     //METHODS: 
     useEffect(() => {
         setActivePage("home")
-        console.log(">>> check account: ", account)
     }, [])
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
     const handleLogOut = async () => {
-        // const res = await sendRequest<IRes<string>>({
-        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`,
-        //     method: "POST",
-        //     headers: {
-        //         // "Authorization": `Bearer ${account?.access_token}`
-        //     }
-        // })
-        const res = await callLogout();
+        const res = await callLogout(session?.access_token as string);
         if (res?.data) {
-            dispatch(doLogout());
+            signOut({ redirect: false })
             toast.success("Log out success!");
             localStorage.removeItem("access_token");
         }
@@ -126,21 +118,21 @@ const AppHeader = () => {
                                         </span>
                                     </div>
                                     {
-                                        account?.isAuthenticated &&
+                                        session?.user?.id &&
                                         <div
                                             className={`nav-btn ${activePage === 'customer' ? "active" : ""}`}
                                         >
                                             <Dropdown menu={{ items }} placement="bottomRight">
                                                 <Space>
                                                     <span className='nav-btn__content--icon'>
-                                                        {!account?.user?.avatar
+                                                        {!session?.user?.avatar
                                                             &&
                                                             <Avatar size={30} icon={<UserOutlined />} />
                                                         }
-                                                        {account?.user?.avatar
+                                                        {session?.user?.avatar
                                                             &&
                                                             <img
-                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${account?.user?.avatar}`}
+                                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/avatar/${session?.user?.avatar}`}
                                                                 style={{ borderRadius: "50%", height: "30px", width: "30px" }}
                                                             />
                                                         }
@@ -154,7 +146,7 @@ const AppHeader = () => {
                                             </Dropdown>
                                         </div>
                                     }
-                                    {!account?.isAuthenticated &&
+                                    {!session?.user?.id &&
                                         <div
                                             className={`nav-btn ${activePage === 'customer' ? "active" : ""}`}
                                             onClick={() => router.push('/auth/signin')}

@@ -11,12 +11,12 @@ import { useEffect, useState } from 'react';
 import '../../styles/home/main.home.scss';
 import { useRouter } from "next/navigation";
 import MainFilter from "./Filter/main.filter";
-import { fetchListBookAction } from "src/utils/actions/home.actions";
 import { revalidateTag } from "next/cache";
 import { sendRequest } from "src/utils/api";
 import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 import { doGetAccount } from "src/lib/features/account/accountSlice";
 import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
+import { useSession } from "next-auth/react";
 
 interface IProps {
     categories: string[] | [];
@@ -26,7 +26,7 @@ const { Meta } = Card;
 const MainHome = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
     //REDUX: 
-    const user = useAppSelector((state) => state.account)
+    const { data: session } = useSession()
     const dispatch = useAppDispatch()
 
     //PROPS: 
@@ -52,8 +52,6 @@ const MainHome = (props: IProps) => {
 
     //PROPS:
     // const [searchTerm, setSearchTerm] = useOutletContext();
-
-
     //METHODS:
     useEffect(() => {
         const fetchCategory = async () => {
@@ -71,12 +69,6 @@ const MainHome = (props: IProps) => {
     }, [current, pageSize, sortQuery, filter]);
 
     const fetchAccount = async () => {
-        // const res = await sendRequest<IRes<IUser>>({
-        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/account`,
-        //     method: "GET",
-        // })
-        const res = await callFetchAccount();
-        dispatch(doGetAccount(res?.data?.user))
     }
 
     const fetchBook = async () => {

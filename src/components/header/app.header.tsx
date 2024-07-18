@@ -63,7 +63,13 @@ const AppHeader = () => {
 
     //METHODS: 
     useEffect(() => {
-        setActivePage("home")
+        const pathname = window.location.pathname;
+        console.log(">> check pathname: ", pathname)
+        if (pathname === '/customer/account')
+            setActivePage("customer");
+        else if (pathname === '/') {
+            setActivePage("home")
+        }
     }, [])
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
@@ -108,7 +114,7 @@ const AppHeader = () => {
                                 <div style={{ display: "flex", width: "350px", justifyContent: "right" }}>
                                     <div
                                         className={`nav-btn ${activePage === 'home' ? "active" : ""}`}
-                                        onClick={() => router.push("/")}
+                                        onClick={() => { router.push("/"); setActivePage("home") }}
                                     >
                                         <span className='nav-btn__content--icon'>
                                             <HomeFilled />
@@ -121,6 +127,7 @@ const AppHeader = () => {
                                         session?.user?.id &&
                                         <div
                                             className={`nav-btn ${activePage === 'customer' ? "active" : ""}`}
+                                            onClick={() => setActivePage("customer")}
                                         >
                                             <Dropdown menu={{ items }} placement="bottomRight">
                                                 <Space>

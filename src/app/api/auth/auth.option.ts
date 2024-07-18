@@ -43,12 +43,18 @@ export const authOptions: AuthOptions = {
         })
     ],
     callbacks: {
-        async jwt({ token, user, account, profile, trigger }) {
+        async jwt({ token, user, account, profile, trigger, session }) {
             if (trigger === 'signIn' && account?.provider === "credentials") {
                 //@ts-ignore
                 token.access_token = user.access_token;
                 //@ts-ignore
                 token.user = user.user;
+            }
+            if (trigger === 'update' && session?.fullName && session?.phone) {
+                //@ts-ignore
+                token.user.fullName = session?.fullName;
+                //@ts-ignore
+                token.user.phone = session?.phone;
             }
             return token;
         },

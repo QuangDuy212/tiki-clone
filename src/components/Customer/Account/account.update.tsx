@@ -25,7 +25,7 @@ const AccountUpdate = () => {
 
     //LIBRARY: 
     const [form] = Form.useForm();
-    const { data: session } = useSession()
+    const { data: session, update } = useSession()
 
     //TYPES: 
     type FieldType = {
@@ -38,6 +38,16 @@ const AccountUpdate = () => {
 
 
     //METHODS: 
+    useEffect(() => {
+        if (session) {
+            form.setFieldsValue({
+                email: session.user.email,
+                fullName: session?.user?.fullName,
+                _id: session?.user?.id,
+                phone: session?.user?.phone
+            })
+        }
+    }, [session])
 
     useEffect(() => {
         if (session?.user?.avatar) {
@@ -54,7 +64,6 @@ const AccountUpdate = () => {
         else if (url === '/customer/help-center') {
             setActiveTab("help-center");
         }
-        console.log(">>> check session: ", session);
 
     }, [session]);
 
@@ -65,6 +74,7 @@ const AccountUpdate = () => {
             console.log(">>> update ok")
             message.success("Cập nhật thông tin thành công!");
             localStorage.removeItem("access_token");
+            await update({ fullName, phone });
         }
         else {
             notification.error({

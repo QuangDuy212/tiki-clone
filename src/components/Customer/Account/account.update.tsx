@@ -12,7 +12,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoNewspaperSharp } from "react-icons/io5";
 import { BiSupport } from "react-icons/bi";
 import ChangePassword from "./change.password"
-import { callUpdateAvatar, callUpdateUser } from "src/services/api"
+import { callChangePassword, callUpdateAvatar, callUpdateUser } from "src/services/api"
 import { useSession } from "next-auth/react"
 const AccountUpdate = () => {
 
@@ -25,6 +25,7 @@ const AccountUpdate = () => {
 
     //LIBRARY: 
     const [form] = Form.useForm();
+    const [secondForm] = Form.useForm();
     const { data: session, update } = useSession()
 
     //TYPES: 
@@ -35,6 +36,12 @@ const AccountUpdate = () => {
         _id?: string;
         email?: string;
     };
+
+    type Password = {
+        email: string;
+        oldpass: string;
+        newpass: string;
+    }
 
 
     //METHODS: 
@@ -64,14 +71,12 @@ const AccountUpdate = () => {
         else if (url === '/customer/help-center') {
             setActiveTab("help-center");
         }
-
     }, [session]);
 
     const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
         const { _id, fullName, phone } = values;
         const res = await callUpdateUser(_id, fullName, phone, session?.access_token as string)
         if (res && res?.data && res?.statusCode === 200) {
-            console.log(">>> update ok")
             message.success("Cập nhật thông tin thành công!");
             localStorage.removeItem("access_token");
             await update({ fullName, phone });
@@ -83,6 +88,7 @@ const AccountUpdate = () => {
             })
         }
     };
+
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -103,9 +109,6 @@ const AccountUpdate = () => {
                 onError("Đã có lỗi khi upload file!")
             }
         }
-
-
-
     }
     const prop = {
         name: 'file',
@@ -252,7 +255,7 @@ const AccountUpdate = () => {
                                             <span style={{ fontSize: "14px", color: "rgb(56, 56, 61)" }}>
                                                 Thiết lập mật khẩu
                                             </span>
-                                            <Button type="primary">Cập nhật</Button>
+                                            <Button type="primary" onClick={() => setActiveAcc("password")}>Cập nhật</Button>
                                         </div>
                                     </Col>
                                 </Row>

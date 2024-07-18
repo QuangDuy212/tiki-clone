@@ -128,10 +128,20 @@ export const callUpdateInfo = (_id: string, fullName: string, phone: string, ava
     })
 }
 
-export const callChangePassword = (email: string, oldpass: string, newpass: string) => {
-    return axios.post<IRes<IUser>, IRes<IUser>>(`/api/v1/user/change-password`, {
-        email, oldpass, newpass
-    })
+export const callChangePassword = (email: string, oldpass: string, newpass: string, access_token: string) => {
+    // return axios.post<IRes<IUser>, IRes<IUser>>(`/api/v1/user/change-password`, {
+    //     email, oldpass, newpass
+    // })
+    return axios<any, IRes<IUser>>({
+        method: 'post',
+        url: '/api/v1/user/change-password',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+        data: {
+            email, oldpass, newpass
+        }
+    });
 }
 
 export const callGetDashBoard = () => {

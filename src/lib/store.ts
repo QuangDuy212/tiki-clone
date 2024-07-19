@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterSlice from './features/counter/counterSlice'
+import searchSlice from './features/search/searchSlice'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             counter: counterSlice,
+            search: searchSlice,
         },
     })
 }

@@ -19,6 +19,7 @@ import { MdDiscount } from "react-icons/md";
 import { doLogout } from 'src/lib/features/account/accountSlice';
 import { callLogout } from 'src/services/api';
 import { signOut, useSession } from 'next-auth/react';
+import { doUpdateQuery } from 'src/lib/features/search/searchSlice';
 
 
 
@@ -31,6 +32,7 @@ const AppHeader = () => {
     const { data: session } = useSession()
 
     //REDUX: 
+    const searchQuery = useAppSelector(state => state.search.query);
     const dispatch = useAppDispatch();
 
     const items: MenuProps['items'] = [
@@ -71,7 +73,10 @@ const AppHeader = () => {
             setActivePage("home")
         }
     }, [])
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+    const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
+        dispatch(doUpdateQuery(value))
+    }
+
 
     const handleLogOut = async () => {
         const res = await callLogout(session?.access_token as string);

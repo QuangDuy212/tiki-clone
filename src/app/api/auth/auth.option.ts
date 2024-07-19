@@ -1,6 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { callFetchAccount, callLogin } from "src/services/api"
+import { setCookie } from "nookies";
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,

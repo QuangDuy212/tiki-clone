@@ -1,5 +1,7 @@
+import { Col, Row } from "antd";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import AccountUpdateNav from "src/components/Customer/Account/account.nav";
 import AppFooter from "src/components/Footer/app.footer";
 import AppHeader from "src/components/Header/app.header";
 import AntdStyledComponentsRegistry from "src/lib/AntdStyledComponentsRegistry ";
@@ -18,7 +20,18 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            {children}
+            <div className="account-update">
+                <div className="container" style={{ padding: "40px 0" }}>
+                    <Row gutter={[20, 20]}>
+                        <Col xl={4} lg={4} md={8} sm={0} xs={0}>
+                            <AccountUpdateNav />
+                        </Col>
+                        <Col xl={20} lg={20} md={16} sm={24} xs={24}>
+                            {children}
+                        </Col>
+                    </Row>
+                </div>
+            </div>
         </>
     );
 }

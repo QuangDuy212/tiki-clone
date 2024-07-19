@@ -12,7 +12,6 @@ import '../../styles/home/main.home.scss';
 import { useRouter } from "next/navigation";
 import MainFilter from "./Filter/main.filter";
 import { revalidateTag } from "next/cache";
-import { sendRequest } from "src/utils/api";
 import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 import { doGetAccount } from "src/lib/features/account/accountSlice";
 import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
@@ -27,6 +26,7 @@ const MainHome = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
     //REDUX: 
     const { data: session } = useSession()
+    const searchQueryRedux = useAppSelector(state => state.search.query);
     const dispatch = useAppDispatch()
 
     //PROPS: 
@@ -62,11 +62,16 @@ const MainHome = (props: IProps) => {
         fetchCategory();
     }, [])
 
+    useEffect(() => {
+        console.log(">>> check query: ", searchQueryRedux)
+        setQuerySearch(searchQueryRedux);
+    }, [searchQueryRedux])
+
 
 
     useEffect(() => {
         fetchBook();
-    }, [current, pageSize, sortQuery, filter]);
+    }, [current, pageSize, sortQuery, filter, querySearch]);
 
     const fetchAccount = async () => {
     }
@@ -79,9 +84,9 @@ const MainHome = (props: IProps) => {
             query += querySearch;
         }
 
-        // if (searchTerm) {
-        //     query += `&mainText=/${searchTerm}/i`;
-        // }
+        if (querySearch) {
+            query += `&mainText=/${querySearch}/i`;
+        }
 
         if (sortQuery) {
             query += sortQuery;
@@ -90,13 +95,6 @@ const MainHome = (props: IProps) => {
         if (filter) {
             query += filter
         }
-        // const res = await sendRequest<IRes<IModelPaginate<IBook>>>({
-        //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/book${query}`,
-        //     method: "GET",
-        //     nextOption: {
-        //         next: { tags: ['get-list-book'] }
-        //     }
-        // })
         const res = await callGetBookWithPaginate(query);
         if (res && res?.data) {
             setListBook(res?.data?.result);

@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "src/lib/hooks";
 import { doGetAccount } from "src/lib/features/account/accountSlice";
 import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
 import { useSession } from "next-auth/react";
+import { convertSlugUrl } from "src/utils/api";
 
 interface IProps {
     categories: string[] | [];
@@ -202,9 +203,9 @@ const MainHome = (props: IProps) => {
         return str;
     }
 
-    const handleRedirectBook = (book: any) => {
+    const handleRedirectBook = (book: IBook) => {
         const slug = convertSlug(book.mainText);
-        router.push(`/book/${slug}?id=${book._id}`)
+        router.push(`book/${convertSlugUrl(book.mainText)}-${book._id}.html?id=${book._id}`)
     }
 
 

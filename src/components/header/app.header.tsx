@@ -66,7 +66,8 @@ const AppHeader = () => {
     //METHODS: 
     useEffect(() => {
         const pathname = window.location.pathname;
-        if (pathname === '/customer/account')
+        const url = window.location.pathname.startsWith('/customer');
+        if (url)
             setActivePage("customer");
         else if (pathname === '/') {
             setActivePage("home")

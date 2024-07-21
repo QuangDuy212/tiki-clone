@@ -84,5 +84,25 @@ declare global {
         "quantity": number;
         "_id": string;
     }
+    interface IBookViewDetail {
+        "_id": string;
+        "thumbnail": string;
+        "slider": string[];
+        "mainText": string;
+        "author": string;
+        "price": number;
+        "sold": number;
+        "quantity": number;
+        "category": string;
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
+        "items": {
+            "original": string;
+            "thumbnail": string;
+            "originalClass": string;
+            "thumbnailClass": string;
+        }[]
 
+    }
 }

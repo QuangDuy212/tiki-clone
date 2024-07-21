@@ -63,7 +63,6 @@ const MainHome = (props: IProps) => {
     }, [])
 
     useEffect(() => {
-        console.log(">>> check query: ", searchQueryRedux)
         setQuerySearch(searchQueryRedux);
     }, [searchQueryRedux])
 

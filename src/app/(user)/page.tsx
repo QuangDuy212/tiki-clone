@@ -5,8 +5,6 @@ import { callFetchCategory } from "src/services/api";
 const Home = async () => {
 
   const categories = await callFetchCategory()
-
-
   return (
     <>
       <MainHome

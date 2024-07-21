@@ -21,19 +21,20 @@ const AccountUpdateNav = () => {
         if (session?.user?.avatar) {
             setAvatar(session?.user?.avatar)
         }
+    }, [session]);
 
+    useEffect(() => {
         let url = window.location.pathname;
-        let urlGen = window.location.pathname.startsWith('/customer/account');
-        if (urlGen) {
+        if (url === 'customer/account') {
             setActiveTab("account");
         }
-        else if (url === '/sales/order/history') {
+        else if (url === 'customer/order') {
             setActiveTab("order");
         }
         else if (url === '/customer/help-center') {
             setActiveTab("help-center");
         }
-    }, [session]);
+    }, [])
 
     return (
         <>
@@ -60,7 +61,7 @@ const AccountUpdateNav = () => {
                     <FaUserCircle style={{ marginRight: "22px", height: "20px", width: "20px" }} /> Thông tin cá nhân
                 </div>
                 <div className={`nav-item ${activeTab === 'order' ? "active" : ""}`}
-                    onClick={() => router.push('/sales/order/history')}
+                    onClick={() => router.push('/customer/order')}
                 >
                     <IoNewspaperSharp style={{ marginRight: "22px", height: "20px", width: "20px" }} /> Quản lí đơn hàng
                 </div>

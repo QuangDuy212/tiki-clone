@@ -95,7 +95,7 @@ export const callDeleteABook = (id: string) => {
 }
 
 export const callGetBookById = (id: string) => {
-    return axios.get(`/api/v1/book/${id}`);
+    return axios.get<any, IRes<IBook>>(`/api/v1/book/${id}`);
 }
 
 export const callCreateAnOrder = (data: IOrder) => {
@@ -148,6 +148,17 @@ export const callGetDashBoard = () => {
     return axios.get(`/api/v1/database/dashboard`);
 }
 
-export const callGetListOrder = (current: number, pageSize: number) => {
-    return axios.get(`/api/v1/order?current=${current}&pageSize=${pageSize}`)
+export const callGetListOrder = (current: number, pageSize: number, access_token: string) => {
+    // return axios.get(`/api/v1/order?current=${current}&pageSize=${pageSize}`);
+    return axios<any, IRes<IModelPaginate<IOrder<IBookDetail>>>>({
+        method: 'get',
+        url: '/api/v1/order',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+        params: {
+            current: current,
+            pageSize: pageSize
+        }
+    });
 }

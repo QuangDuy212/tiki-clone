@@ -66,27 +66,23 @@ declare global {
         email: string;
         phone: string;
     }
-    interface IBook {
-        "thumbnail": string;
-        "slider": string[];
-        "mainText": string;
-        "author": string;
-        "price": number;
-        "sold": number;
-        "quantity": number;
-        "category": string;
-    }
-    interface IOrder {
+    interface IOrder<T> {
+        "_id": string;
         "name": string;
         "address": string;
         "phone": string;
         "totalPrice": number;
-        "detail": [
-            {
-                "bookName": string;
-                "quantity": number;
-                "_id": string;
-            }
-        ]
+        "detail": T[];
+        "totalPrice": number;
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
     }
+
+    interface IBookDetail {
+        "bookName": string;
+        "quantity": number;
+        "_id": string;
+    }
+
 }

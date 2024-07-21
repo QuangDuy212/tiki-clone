@@ -45,7 +45,7 @@ const AppHeader = () => {
         {
             key: '2',
             label: (
-                <span>Đơn hàng của tôi</span>
+                <span onClick={() => { router.push("/customer/order") }}>Đơn hàng của tôi</span>
             ),
         },
         {

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { doAddBookAction } from 'src/lib/features/order/orderSlice';
 import { useRouter } from 'next/navigation'
 import '../../styles/book/book.detail.scss'
+import ModalGallery from './modal.gallery';
 
 interface IImage {
     "original": string;
@@ -29,9 +30,9 @@ const BookDetail = (props: IProps) => {
     //PROPS:
     const { dataBook, image } = props;
     //STATE: 
-    const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [currentQuantity, setCurrentQuantity] = useState(1);
+    const [isOpenModalGallery, setIsOpenModalGallery] = useState<boolean>(false);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [currentQuantity, setCurrentQuantity] = useState<number>(1);
 
     const refGallery = useRef(null);
 
@@ -133,12 +134,12 @@ const BookDetail = (props: IProps) => {
                         </Row>
                     </div>
                 </div >
-                {/* <ModalGallery
-                isOpenModalGallery={isOpenModalGallery}
-                setIsOpenModalGallery={setIsOpenModalGallery}
-                currentIndex={currentIndex}
-                images={image}
-            /> */}
+                <ModalGallery
+                    isOpenModalGallery={isOpenModalGallery}
+                    setIsOpenModalGallery={setIsOpenModalGallery}
+                    currentIndex={currentIndex}
+                    images={image}
+                />
 
 
             </div>

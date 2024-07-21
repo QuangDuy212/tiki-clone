@@ -23,7 +23,7 @@ const OrderHistory = (props: IProps) => {
     }
     return (
         <>
-            <div style={{ fontSize: "20px", margin: "10px 0" }}>
+            <div style={{ fontSize: "20px", margin: "10px 0", padding: "0 20px" }}>
                 Đơn hàng của tôi
             </div>
             <div style={{

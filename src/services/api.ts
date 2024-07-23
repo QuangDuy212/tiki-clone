@@ -30,6 +30,10 @@ export const callLogout = (access_token: string) => {
         }
     });
 }
+export const callFreshToken = () => {
+    return axios.get<any, IRes<IUser>>("/api/v1/auth/refresh");
+}
+
 
 export const callGetUserWithPaginate = (query: string) => {
     return axios.get(`/api/v1/user${query}`);

@@ -108,32 +108,30 @@ const OrderCartPage = () => {
                                             carts.map((item: ICartRedux, index: number) => {
                                                 const total = item.quantity * item.detail.price;
                                                 return (
-                                                    <>
-                                                        <Col xl={24} md={24} sm={24} key={`product-${index}`}>
-                                                            <div className="product" >
-                                                                <Row>
-                                                                    <Col className="product__img " xl={4} md={4} sm={12} xs={12}>
-                                                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/book/${item.detail.thumbnail}`} />
-                                                                    </Col>
-                                                                    <Col className="product__name " xl={8} md={8} sm={12} xs={12}>
-                                                                        {truncate(item.detail.mainText, 20)}
-                                                                    </Col>
-                                                                    <Col className="product__price flex-full" xl={3} md={3} sm={6} xs={6}>
-                                                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.detail.price)}
-                                                                    </Col>
-                                                                    <Col className="product__quantity flex-full" xl={3} md={3} sm={6} xs={6}>
-                                                                        <InputNumber min={1} max={item.detail.quantity} defaultValue={item.quantity} onChange={(value) => onChange(value, item)} />
-                                                                    </Col>
-                                                                    <Col className="product__total flex-full" xl={3} md={3} sm={6} xs={6}>
-                                                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
-                                                                    </Col>
-                                                                    <Col className="product__btn flex-full" xl={3} md={3} sm={6} xs={6}>
-                                                                        <button onClick={() => onDelete(item)}>Xóa</button>
-                                                                    </Col>
-                                                                </Row>
-                                                            </div>
-                                                        </Col>
-                                                    </>
+                                                    <Col xl={24} md={24} sm={24} key={`product-${index}`}>
+                                                        <div className="product" >
+                                                            <Row>
+                                                                <Col className="product__img " xl={4} md={4} sm={12} xs={12}>
+                                                                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/book/${item.detail.thumbnail}`} />
+                                                                </Col>
+                                                                <Col className="product__name " xl={8} md={8} sm={12} xs={12}>
+                                                                    {truncate(item.detail.mainText, 20)}
+                                                                </Col>
+                                                                <Col className="product__price flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.detail.price)}
+                                                                </Col>
+                                                                <Col className="product__quantity flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                    <InputNumber min={1} max={item.detail.quantity} defaultValue={item.quantity} onChange={(value) => onChange(value, item)} />
+                                                                </Col>
+                                                                <Col className="product__total flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
+                                                                </Col>
+                                                                <Col className="product__btn flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                    <button onClick={() => onDelete(item)}>Xóa</button>
+                                                                </Col>
+                                                            </Row>
+                                                        </div>
+                                                    </Col>
                                                 )
                                             })
                                         }

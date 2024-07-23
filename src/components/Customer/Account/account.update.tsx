@@ -1,18 +1,13 @@
 'use client'
 
 import { UploadOutlined } from "@ant-design/icons"
-import { Avatar, Button, Col, Divider, Form, Input, message, notification, Row, Upload } from "antd"
-import { FormProps, useForm } from "antd/es/form/Form"
+import { Avatar, Button, Col, Form, Input, message, notification, Row, Upload } from "antd"
+import { FormProps } from "antd/es/form/Form"
 import { RcFile } from "antd/es/upload"
 import { useEffect, useState } from "react"
-import { doUpdateUser } from "src/lib/features/account/accountSlice"
 import { useAppDispatch, useAppSelector } from "src/lib/hooks"
 import '../../../styles/account/account.update.scss'
-import { FaUserCircle } from "react-icons/fa";
-import { IoNewspaperSharp } from "react-icons/io5";
-import { BiSupport } from "react-icons/bi";
-import ChangePassword from "./change.password"
-import { callChangePassword, callUpdateAvatar, callUpdateUser } from "src/services/api"
+import { callUpdateAvatar, callUpdateUser } from "src/services/api"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 const AccountUpdate = () => {
@@ -47,6 +42,9 @@ const AccountUpdate = () => {
 
 
     //METHODS: 
+    useEffect(() => {
+        if (!session) router.push("/")
+    }, [])
     useEffect(() => {
         if (session) {
             form.setFieldsValue({

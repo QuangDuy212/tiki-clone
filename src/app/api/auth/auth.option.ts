@@ -1,7 +1,30 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { callFetchAccount, callLogin } from "src/services/api"
-import { setCookie } from "nookies";
+import { callFetchAccount, callFreshToken, callLogin } from "src/services/api"
+import dayjs from "dayjs";
+import { JWT } from "next-auth/jwt";
+
+async function refreshAccessToken(token: JWT) {
+    const res = await callFreshToken();
+    if (res?.data) {
+        return {
+            ...token,
+            access_token: res?.data?.access_token ?? "",
+            // time to refesh token
+            access_expire: dayjs(new Date()).add(
+                +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
+            ).unix(),
+            error: ""
+
+        }
+    } else {
+        // Failed fresh token => do nothing
+        return {
+            ...token,
+            error: "RefreshAccessTokenError" // this is used in the front-end, 
+        }
+    }
+}
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -50,12 +73,19 @@ export const authOptions: AuthOptions = {
                 token.access_token = user.access_token;
                 //@ts-ignore
                 token.user = user.user;
+                token.access_expire = dayjs(new Date()).add(
+                    +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
+                ).unix();
             }
             if (trigger === 'update' && session?.fullName && session?.phone) {
                 //@ts-ignore
                 token.user.fullName = session?.fullName;
                 //@ts-ignore
                 token.user.phone = session?.phone;
+            }
+            const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number ?? 0)))
+            if (isTimeAfter) {
+
             }
             return token;
         },
@@ -65,6 +95,10 @@ export const authOptions: AuthOptions = {
                 session.access_token = token.access_token;
                 //@ts-ignore
                 session.user = token.user;
+                //@ts-ignore
+                session.access_expire = token.access_expire;
+                //@ts-ignore
+                session.error = token.error;
             }
             return session;
         }

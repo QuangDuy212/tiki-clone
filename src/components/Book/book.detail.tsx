@@ -54,7 +54,7 @@ const BookDetail = (props: IProps) => {
 
     const handleBuyNow = (quantity: number, book: IBook | undefined) => {
         dispatch(doAddBookAction({ quantity, detail: book, _id: book?._id }));
-        router.push("/order");
+        router.push("/checkout");
     }
 
     return (

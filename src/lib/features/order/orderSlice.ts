@@ -8,11 +8,7 @@ import { message } from 'antd';
 // ]
 
 export interface OrderState {
-    carts: {
-        quantity: number;
-        _id: string;
-        detail: IBook;
-    }[];
+    carts: ICartRedux[];
 }
 
 
@@ -59,7 +55,7 @@ export const orderSlice = createSlice({
                 state.carts = state.carts.filter(item => item._id !== action.payload._id);
             }
         },
-        doResetBookCart: (state, action) => {
+        doResetBookCart: (state) => {
             state.carts = [];
         }
     },

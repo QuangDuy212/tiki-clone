@@ -98,7 +98,7 @@ export const callGetBookById = (id: string) => {
     return axios.get<any, IRes<IBook>>(`/api/v1/book/${id}`);
 }
 
-export const callCreateAnOrder = (data: IOrder<IBookDetail>, access_token: string) => {
+export const callCreateAnOrder = (data: ICartInput, access_token: string) => {
     // return axios.post(`/api/v1/order`, {
     //     ...data
     // })

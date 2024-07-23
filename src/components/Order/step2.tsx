@@ -4,9 +4,9 @@ import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ImSpinner8 } from "react-icons/im";
-import { callCreateAnOrder } from '../../services/api';
 import { useAppSelector } from 'src/lib/hooks';
 import { useSession } from 'next-auth/react';
+import { callCreateAnOrder } from 'src/services/api';
 import { doResetBookCart } from 'src/lib/features/order/orderSlice';
 
 interface IProps {
@@ -29,12 +29,13 @@ const ConfirmOrder = (props: IProps) => {
     const dispatch = useDispatch();
 
 
+
     //STATE: 
     const [isSubmit, setIsSubmit] = useState(false);
 
-    const onFinish = async (values) => {
+    const onFinish = async (values: { name: string, address: string, phone: string }) => {
         setIsSubmit(true);
-        const detailOrder = carts.map((item, index) => {
+        const detailOrder = carts.map((item: ICartRedux) => {
             return {
                 bookName: item?.detail?.mainText,
                 quantity: item?.quantity,
@@ -53,16 +54,17 @@ const ConfirmOrder = (props: IProps) => {
             detail: detailOrder
         }
 
-
-        const res = await callCreateAnOrder(data);
-        if (res.statusCode == 201) {
-            message.success("Thanh toán thành công!");
-            setCurrentStep(3);
-            dispatch(doResetBookCart());
-        } else {
-            message.error(res.message);
+        if (session) {
+            const res = await callCreateAnOrder(data, session?.access_token);
+            if (res.statusCode == 201) {
+                message.success("Thanh toán thành công!");
+                setCurrentStep(3);
+                dispatch(doResetBookCart());
+            } else {
+                message.error(res.message);
+            }
+            setIsSubmit(false);
         }
-        setIsSubmit(false);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -88,7 +90,7 @@ const ConfirmOrder = (props: IProps) => {
                         labelCol={{ span: 24 }}
                         name="name"
                         rules={[{ required: true, message: 'Không để trống tên!' }]}
-                        initialValue={user?.fullName}
+                        initialValue={session?.user?.fullName}
                     >
                         <Input />
                     </Form.Item>
@@ -98,7 +100,7 @@ const ConfirmOrder = (props: IProps) => {
                         labelCol={{ span: 24 }}
                         name="phone"
                         rules={[{ required: true, message: 'Không để trống điện thoại!' }]}
-                        initialValue={user?.phone}
+                        initialValue={session?.user?.phone}
                     >
                         <Input />
                     </Form.Item>

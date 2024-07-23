@@ -1,7 +1,9 @@
+import OrderCartPage from "src/components/Order/order.cart";
+
 const OrderPage = () => {
     return (
         <>
-            Order page
+            <OrderCartPage />
         </>
     )
 }

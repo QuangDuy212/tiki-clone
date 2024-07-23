@@ -103,6 +103,17 @@ declare global {
             "originalClass": string;
             "thumbnailClass": string;
         }[]
-
+    }
+    interface ICartRedux {
+        quantity: number;
+        _id: string;
+        detail: IBook;
+    }
+    interface ICartInput {
+        "name": string;
+        "address": string;
+        "phone": string;
+        "totalPrice": number;
+        "detail": IBookDetail[]
     }
 }

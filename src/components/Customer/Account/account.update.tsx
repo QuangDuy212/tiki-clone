@@ -223,7 +223,7 @@ const AccountUpdate = () => {
                             <span style={{ fontSize: "14px", color: "rgb(56, 56, 61)" }}>
                                 Thiết lập mật khẩu
                             </span>
-                            <Button type="primary" onClick={() => router.push("/customer/account/pass")}>Cập nhật</Button>
+                            <Button type="dashed" onClick={() => router.push("/customer/account/pass")}>Cập nhật</Button>
                         </div>
                     </Col>
                 </Row>

@@ -66,7 +66,7 @@ const ModalGallery = (props: IProps) => {
                             {images?.map((item, index) => {
                                 return (
                                     <Col xl={8} md={24} key={`image-${index}`}>
-                                        <div className={`thumbnail ${index === activeIndex ? "active" : ""} `}
+                                        <div className={`thumbnail ${index === activeIndex ? "active-image" : ""} `}
                                         >
                                             <Image
                                                 src={item.thumbnail}

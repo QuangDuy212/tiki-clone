@@ -1,18 +1,39 @@
-import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './features/counter/counterSlice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import orderSlice from './features/order/orderSlice'
 import searchSlice from './features/search/searchSlice'
 
-export const makeStore = () => {
-    return configureStore({
-        reducer: {
-            counter: counterSlice,
-            search: searchSlice,
-        },
-    })
+const persistConfig = {
+    key: 'persist',
+    storage,
+    blacklist: ['search']
 }
 
-// Infer the type of makeStore
+const rootReducer = combineReducers({
+    order: orderSlice,
+    search: searchSlice
+})
+
+const makeConfiguredStore = () =>
+    configureStore({
+        reducer: rootReducer,
+    })
+
+export const makeStore = () => {
+    const isServer = typeof window === 'undefined'
+    if (isServer) {
+        return makeConfiguredStore()
+    } else {
+        const persistedReducer = persistReducer(persistConfig, rootReducer)
+        let store: any = configureStore({
+            reducer: persistedReducer,
+        })
+        store.__persistor = persistStore(store)
+        return store
+    }
+}
+
 export type AppStore = ReturnType<typeof makeStore>
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<AppStore['getState']>
 export type AppDispatch = AppStore['dispatch']

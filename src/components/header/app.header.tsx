@@ -33,6 +33,7 @@ const AppHeader = () => {
 
     //REDUX: 
     const searchQuery = useAppSelector(state => state.search.query);
+    const carts = useAppSelector(state => state.order.carts);
     const dispatch = useAppDispatch();
 
     const items: MenuProps['items'] = [
@@ -51,7 +52,7 @@ const AppHeader = () => {
         {
             key: '3',
             label: (
-                <span>Trung tâm hỗ trợ</span>
+                <span onClick={() => { router.push("/customer/help-center") }}>Trung tâm hỗ trợ</span>
             ),
         },
         {
@@ -82,6 +83,7 @@ const AppHeader = () => {
         const res = await callLogout(session?.access_token as string);
         if (res?.data) {
             signOut({ redirect: false })
+            router.push("/")
             toast.success("Log out success!");
             localStorage.removeItem("access_token");
         }
@@ -176,9 +178,11 @@ const AppHeader = () => {
                                     </div>
                                     <div
                                         className='cart-btn'
+                                        onClick={() => {
+                                            router.push('/checkout')
+                                        }}
                                     >
-                                        <Badge count={1}>
-
+                                        <Badge count={carts?.length ?? 0} overflowCount={9} showZero>
                                             <span style={{ color: "rgb(10, 104, 255)", fontSize: "24px" }}>
                                                 <ShoppingCartOutlined />
                                             </span>

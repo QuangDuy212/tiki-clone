@@ -60,9 +60,6 @@ const MainFilter = (props: IProps) => {
         }
     }
 
-
-
-
     return (
         <>
             <div className='filter'>
@@ -74,6 +71,7 @@ const MainFilter = (props: IProps) => {
                             form.resetFields();
                             setFilter("");
                             setQuery("");
+                            console.log(">>> cick")
                             // setSearchTerm("") 
                         }} /></Button>
                 </div>

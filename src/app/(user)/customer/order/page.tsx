@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "src/app/api/auth/auth.option";
 import OrderHistory from "src/components/Customer/Order/order.history";
-import { callGetBookById, callGetListOrder } from "src/services/api";
+import { callGetBookById, callGetListOrder, callGetOrderHistory } from "src/services/api";
 
 const OrderPage = async () => {
     //NEXT AUTH:
@@ -17,13 +17,17 @@ const OrderPage = async () => {
                 "bookName": '',
                 "quantity": 0,
                 "_id": '',
-            }]
+            }
+        ],
+        "createdAt": "",
+        "updatedAt": "",
+        "__v": 0,
     }]
 
     if (session) {
-        const res = await callGetListOrder(1, 100, session.access_token as string);
+        const res = await callGetOrderHistory(session.access_token as string);
         if (res?.data)
-            orders = res?.data?.result
+            orders = res?.data
     }
 
     return (

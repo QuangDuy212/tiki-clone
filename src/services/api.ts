@@ -98,14 +98,34 @@ export const callGetBookById = (id: string) => {
     return axios.get<any, IRes<IBook>>(`/api/v1/book/${id}`);
 }
 
-export const callCreateAnOrder = (data: IOrder) => {
-    return axios.post(`/api/v1/order`, {
-        ...data
-    })
+export const callCreateAnOrder = (data: IOrder<IBookDetail>, access_token: string) => {
+    // return axios.post(`/api/v1/order`, {
+    //     ...data
+    // })
+    return axios<any, IRes<IOrder<IBookDetail>[]>>({
+        method: 'post',
+        url: "/api/v1/order",
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+        data: {
+            ...data
+        }
+    });
 }
 
 export const callGetListOrderWithPaginate = (current: number, pageSize: number) => {
     return axios.get(`/api/v1/order?current=${current}&pageSize=${pageSize}`)
+}
+
+export const callGetOrderHistory = (access_token: string) => {
+    return axios<any, IRes<IOrder<IBookDetail>[]>>({
+        method: 'get',
+        url: "/api/v1/history",
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        }
+    });
 }
 
 export const callUpdateAvatar = (fileImg: RcFile | string | Blob) => {

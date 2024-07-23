@@ -20,7 +20,7 @@ const HelpCenter = () => {
                 <div style={{ fontSize: "14px", color: "#808089" }}>
                     Chăm sóc khách hàng
                 </div>
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "100%", marginTop: "10px" }}>
                     <Row gutter={[16, 16]}>
                         <Col span={8} >
                             <div className="help-item">

@@ -2,6 +2,8 @@
 import { Button, Modal, Table, Image } from 'antd';
 import { useEffect, useState } from 'react';
 import { callGetBookById } from 'src/services/api';
+import { useClientMediaQuery } from 'src/utils/isMobile';
+import '../../../styles/order/order.modal.scss'
 
 interface IProps {
     isOpenDetail: boolean;
@@ -47,6 +49,7 @@ const ModalDetail = (props: IProps) => {
         },
     ];
 
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
     const fetchBookById = async () => {
         const listId = dataDetail?.map(i => i._id);
         var listBook: IBook[] | undefined = await Promise.all(listId.map(async (item): Promise<IBook | undefined> => {
@@ -67,7 +70,6 @@ const ModalDetail = (props: IProps) => {
                 onOk={() => setIsOpenDetail(false)}
                 onCancel={() => { setIsOpenDetail(false) }}
                 width={1000}
-
             >
                 <Table
                     columns={columns}

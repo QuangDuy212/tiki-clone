@@ -10,6 +10,7 @@ import '../../../styles/account/account.update.scss'
 import { callUpdateAvatar, callUpdateUser } from "src/services/api"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { useClientMediaQuery } from "src/utils/isMobile"
 const AccountUpdate = () => {
 
     //STATE:
@@ -24,6 +25,7 @@ const AccountUpdate = () => {
     const [secondForm] = Form.useForm();
     const { data: session, update } = useSession()
     const router = useRouter();
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
 
     //TYPES: 
     type FieldType = {
@@ -131,7 +133,7 @@ const AccountUpdate = () => {
 
     return (
         <>
-            <div className="update-container">
+            <div className="update-container" style={isMobile ? { paddingTop: "80px" } : {}}>
                 <Row gutter={[20, 20]}>
                     <Col xl={24} md={24} sm={24} xs={24}>
                         <div className="update-title">

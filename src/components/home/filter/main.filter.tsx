@@ -157,27 +157,7 @@ const MainFilter = (props: IProps) => {
                             style={{ width: "100%" }}
                             onClick={() => form.submit()}
                         >Áp dụng</Button>
-                        {/* <Form.Item>
-                            <div>
-                                <Rate disabled defaultValue={5} style={{ fontSize: '10px' }} />
-                            </div>
-                            <div>
-                                <Rate disabled defaultValue={4} style={{ fontSize: '12px' }} />
-                                <span>trở lên</span>
-                            </div>
-                            <div>
-                                <Rate disabled defaultValue={3} style={{ fontSize: '12px' }} />
-                                <span>trở lên</span>
-                            </div>
-                            <div>
-                                <Rate disabled defaultValue={2} style={{ fontSize: '12px' }} />
-                                <span>trở lên</span>
-                            </div>
-                            <div>
-                                <Rate disabled defaultValue={1} style={{ fontSize: '12px' }} />
-                                <span>trở lên</span>
-                            </div>
-                        </Form.Item> */}
+
                     </Form>
                 </div>
             </div>

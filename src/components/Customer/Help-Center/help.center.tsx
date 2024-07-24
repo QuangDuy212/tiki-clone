@@ -4,25 +4,26 @@ import '../../../styles/help-center/help.center.scss';
 import { Button, Col, Grid, Image, Row } from "antd";
 import { ImGlass } from "react-icons/im";
 import { CgMail } from "react-icons/cg";
+import { useClientMediaQuery } from "src/utils/isMobile";
 
 const HelpCenter = () => {
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
     return (
-        <>
-            <div style={{ fontSize: "20px", margin: "10px 0", padding: "0 20px" }}>
+        <div style={isMobile ? { paddingTop: "80px" } : {}}>
+            <div style={{ fontSize: "20px", margin: "10px 0", }}>
                 Trung tâm hỗ trợ
             </div>
             <div style={{
                 backgroundColor: "#fff",
                 borderRadius: "5px",
                 padding: "20px",
-                width: "100%"
             }}>
                 <div style={{ fontSize: "14px", color: "#808089" }}>
                     Chăm sóc khách hàng
                 </div>
                 <div style={{ width: "100%", marginTop: "10px" }}>
                     <Row gutter={[16, 16]}>
-                        <Col span={8} >
+                        <Col xl={8} lg={8} md={8} sm={24} xs={24} >
                             <div className="help-item">
                                 <div style={{ height: "43px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                     <FiPhone style={{ width: "30px", height: "30px", color: "rgb(16, 107, 255)" }}
@@ -47,7 +48,7 @@ const HelpCenter = () => {
                                 </div>
                             </div>
                         </Col>
-                        <Col span={8} >
+                        <Col xl={8} lg={8} md={8} sm={24} xs={24} >
                             <div className="help-item">
                                 <div style={{ height: "43px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                     <img
@@ -69,7 +70,7 @@ const HelpCenter = () => {
                                 </div>
                             </div>
                         </Col>
-                        <Col span={8} ><div className="help-item">
+                        <Col xl={8} lg={8} md={8} sm={24} xs={24} ><div className="help-item">
                             <div style={{ height: "43px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <CgMail
                                     style={{ width: "40px", height: "40px", color: "rgb(16, 107, 255)" }}
@@ -97,7 +98,7 @@ const HelpCenter = () => {
 
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default HelpCenter;

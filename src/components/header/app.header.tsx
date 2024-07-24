@@ -171,6 +171,18 @@ const AppHeader = () => {
                                         <Divider />
                                         <p
                                             style={{ padding: "5px", margin: "10px 0", fontSize: "20px" }}
+                                            onClick={() => { router.push("/customer/order"); setOpen(false) }}
+                                        >
+                                            Đơn hàng của tôi</p>
+                                        <Divider />
+                                        <p
+                                            style={{ padding: "5px", margin: "10px 0", fontSize: "20px" }}
+                                            onClick={() => { router.push("/customer/help-center"); setOpen(false) }}
+                                        >
+                                            Trung tâm hỗ trợ</p>
+                                        <Divider />
+                                        <p
+                                            style={{ padding: "5px", margin: "10px 0", fontSize: "20px" }}
                                             onClick={() => handleLogOut()}>
 
                                             Đăng xuất

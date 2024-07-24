@@ -9,6 +9,7 @@ import ViewOrder from "./step1";
 import ConfirmOrder from "./step2";
 import { doDeleteBookAction, doUpdateBookAction } from "src/lib/features/order/orderSlice";
 import { useRouter } from "next/navigation";
+import { useClientMediaQuery } from "src/utils/isMobile";
 
 const OrderCartPage = () => {
     //REDUX: 
@@ -21,6 +22,7 @@ const OrderCartPage = () => {
     //LIBRARY:
     const dispatch = useDispatch();
     const router = useRouter();
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
 
     //METHODS:
     useEffect(() => {
@@ -55,10 +57,10 @@ const OrderCartPage = () => {
     };
     return (
         <>
-            <div className="cart-container">
+            <div className="cart-container" style={isMobile ? { paddingTop: "80px" } : {}}>
                 <div className="container">
                     <Steps
-                        style={{ marginTop: "60px" }}
+                        style={{ marginBottom: "20px" }}
                         current={currentStep}
                         items={[
                             {
@@ -117,13 +119,13 @@ const OrderCartPage = () => {
                                                                 <Col className="product__name " xl={8} md={8} sm={12} xs={12}>
                                                                     {truncate(item.detail.mainText, 20)}
                                                                 </Col>
-                                                                <Col className="product__price flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                <Col className="product__price " xl={3} md={0} sm={0} xs={0}>
                                                                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.detail.price)}
                                                                 </Col>
                                                                 <Col className="product__quantity flex-full" xl={3} md={3} sm={6} xs={6}>
                                                                     <InputNumber min={1} max={item.detail.quantity} defaultValue={item.quantity} onChange={(value) => onChange(value, item)} />
                                                                 </Col>
-                                                                <Col className="product__total flex-full" xl={3} md={3} sm={6} xs={6}>
+                                                                <Col className="product__total flex-full" xl={3} md={3} sm={12} xs={12}>
                                                                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}
                                                                 </Col>
                                                                 <Col className="product__btn flex-full" xl={3} md={3} sm={6} xs={6}>
@@ -137,7 +139,7 @@ const OrderCartPage = () => {
                                         }
 
                                         {carts.length === 0 &&
-                                            <Col xl={24} md={24} sm={24}>
+                                            <Col xl={24} md={24} sm={24} xs={24}>
                                                 <div className="product" style={{ height: "100%" }}>
                                                     <Empty description="Không có sản phẩm nào" />
                                                 </div>

@@ -1,11 +1,10 @@
 .cart-container {
     margin          : 0 auto;
     background-color: #f5f5fa;
-    padding         : 10px 40px;
+    padding         : 10px 0 10px;
     min-height      : 100vh;
 
     .title {
-        margin-top      : 60px;
         width           : 100%;
         padding         : 20px 0;
         background-color: #fff;
@@ -30,11 +29,10 @@
     }
 
     .product {
-        width           : 100%;
         background-color: #fff;
         border-radius   : 10px;
         min-height      : 80px;
-        padding         : 20px 0;
+        padding         : 20px 10px;
 
         &__img {
             img {
@@ -76,7 +74,6 @@
 
     .pay {
         background-color: #fff;
-        margin-top      : 60px;
         border-radius   : 5px;
 
         padding: 20px;
@@ -121,7 +118,6 @@
     background-color: #fff;
     border-radius   : 5px;
     padding         : 10px;
-    margin-top      : 60px;
 
     &__price {
         display        : flex;

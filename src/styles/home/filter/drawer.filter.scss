@@ -1,0 +1,22 @@
+.filter1 {
+    background-color: #fff;
+    border-radius   : 10px;
+
+    &__title {
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+
+        &--icon {
+            font-size: 20px;
+            color    : #5699ff;
+            margin   : 0 5px;
+        }
+
+        &--name {}
+
+        &--btn {
+            margin: 0 5px;
+        }
+    }
+}

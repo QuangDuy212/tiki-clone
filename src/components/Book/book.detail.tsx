@@ -9,6 +9,7 @@ import { doAddBookAction } from 'src/lib/features/order/orderSlice';
 import { useRouter } from 'next/navigation'
 import '../../styles/book/book.detail.scss'
 import ModalGallery from './modal.gallery';
+import { useClientMediaQuery } from 'src/utils/isMobile';
 
 interface IImage {
     "original": string;
@@ -26,6 +27,7 @@ const BookDetail = (props: IProps) => {
     // LIBRARY:
     const dispatch = useDispatch();
     const router = useRouter()
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
 
     //PROPS:
     const { dataBook, image } = props;
@@ -59,8 +61,8 @@ const BookDetail = (props: IProps) => {
 
     return (
         <>
-            <div className='container-view-detail'>
-                <div className='container'>
+            <div className='container-view-detail' style={isMobile ? { paddingTop: "80px" } : {}}>
+                <div className='container' >
                     <div className='content'>
                         <Row gutter={[20, 20]}>
                             <Col xl={10} md={24} sm={24} xs={24}>

@@ -18,6 +18,7 @@ import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
 import { useSession } from "next-auth/react";
 import { convertSlugUrl } from "src/utils/api";
 import { useClientMediaQuery } from "src/utils/isMobile";
+import DrawerFilter from "./Filter/drawer.filter";
 
 interface IProps {
     categories: string[] | [];
@@ -294,6 +295,12 @@ const MainHome = (props: IProps) => {
                     </Row >
                 </div>
             </div>
+            <DrawerFilter
+                categories={categories}
+                setFilter={setFilter}
+                isOpenFilter={isOpenFilter}
+                setIsOpenFilter={setIsOpenFilter}
+            />
         </>
     )
 }

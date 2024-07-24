@@ -3,6 +3,7 @@ import { Button, Col, Form, Input, Row, message, notification } from "antd";
 import { useSession } from "next-auth/react";
 import { useAppSelector } from "src/lib/hooks";
 import { callChangePassword } from "src/services/api";
+import { useClientMediaQuery } from "src/utils/isMobile";
 
 interface IProps {
 
@@ -14,6 +15,7 @@ const ChangePassword = (props: IProps) => {
     //LIBRARY:
     const [form1] = Form.useForm();
     const { data: session } = useSession()
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
 
     const onFinish = async (values: { email: string, oldpass: string, newpass: string }) => {
         const { email, oldpass, newpass } = values;
@@ -37,7 +39,7 @@ const ChangePassword = (props: IProps) => {
     }
     return (
         <>
-            <div className="update-container" >
+            <div className="update-container" style={isMobile ? { paddingTop: "80px" } : {}}>
                 <Row>
                     <Col md={24} sm={24} xs={24}>
                         <div className="update-password"

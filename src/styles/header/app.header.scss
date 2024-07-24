@@ -9,12 +9,15 @@
     .container {
         width: 750px;
     }
+
+
 }
 
 @media (min-width: 992px) {
     .container {
         width: 970px;
     }
+
 }
 
 @media (min-width: 1200px) {
@@ -27,6 +30,13 @@
     .container {
         width: 1300px;
     }
+}
+
+.header-container {
+    position        : fixed;
+    background-color: #fff;
+    width           : 100vw;
+    z-index         : 100;
 }
 
 .nav-btn {
@@ -118,5 +128,20 @@
     &__content {
         font-size  : 12px;
         margin-left: 6px;
+    }
+}
+
+.header {
+    &__title {
+
+
+        &--bar {
+            font-size         : 35px;
+            // display        : flex;
+            // justify-content: center;
+            // align-items    : center;
+            cursor            : pointer;
+
+        }
     }
 }

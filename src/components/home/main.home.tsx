@@ -17,6 +17,7 @@ import { doGetAccount } from "src/lib/features/account/accountSlice";
 import { callFetchAccount, callGetBookWithPaginate } from "src/services/api";
 import { useSession } from "next-auth/react";
 import { convertSlugUrl } from "src/utils/api";
+import { useClientMediaQuery } from "src/utils/isMobile";
 
 interface IProps {
     categories: string[] | [];
@@ -25,6 +26,8 @@ interface IProps {
 const { Meta } = Card;
 const MainHome = (props: IProps) => {
     // The `state` arg is correctly typed as `RootState` already
+
+    const isMobile = useClientMediaQuery('(max-width: 1000px)')
     //REDUX: 
     const { data: session } = useSession()
     const searchQueryRedux = useAppSelector(state => state.search.query);
@@ -211,7 +214,7 @@ const MainHome = (props: IProps) => {
 
     return (
         <>
-            <div className="main-home ">
+            <div className="main-home " style={isMobile ? { paddingTop: "80px" } : { paddingTop: 0 }}>
                 <div className='container '>
                     <Row className='home' gutter={[18, 18]}>
                         <Col lg={5} md={0} sm={0} xs={0} >
@@ -246,6 +249,7 @@ const MainHome = (props: IProps) => {
                                                     <div className='book' >
                                                         <div
                                                             className='book__img'
+                                                            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
                                                         >
                                                             <Image
                                                                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/book/${item.thumbnail}`}

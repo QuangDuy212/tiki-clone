@@ -1,7 +1,7 @@
 'use client';
 import { Skeleton, Row, Col } from 'antd';
 import { useState } from 'react';
-import '../../../styles/admin/DashBoard/dashboard.loader.scss';
+import '../../../styles/admin/dashboard/dashboard.loader.scss'
 
 const DashboardLoader = () => {
     const [active, setActive] = useState(true);

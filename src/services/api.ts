@@ -2,7 +2,7 @@ import { RcFile } from 'antd/es/upload';
 import axios from '../utils/axios-custom'
 
 export const callRegister = (fullName: string, email: string, password: string, phone: string) => {
-    return axios.post<any, IRes<IUser>>('/api/v1/user/register', { fullName, email, password, phone });
+    return axios.post<any, IRes<IRegister>>('/api/v1/user/register', { fullName, email, password, phone });
 }
 
 export const callLogin = (username: string | undefined, password: string | undefined) => {
@@ -35,12 +35,27 @@ export const callFreshToken = () => {
 }
 
 
-export const callGetUserWithPaginate = (query: string) => {
-    return axios.get(`/api/v1/user${query}`);
+export const callGetUserWithPaginate = (query: string, access_token: string) => {
+    // return axios.get(`/api/v1/user${query}`);
+    return axios<any, IRes<IModelPaginate<IUserForAdmin>>>({
+        method: 'get',
+        url: `/api/v1/user${query}`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
-export const callBulkCreateUser = (data: IBulkCreate[] | []) => {
-    return axios.post(`/api/v1/user/bulk-create`, data);
+export const callBulkCreateUser = (data: IBulkCreate[] | [], access_token: string) => {
+    // return axios.post(`/api/v1/user/bulk-create`, data);
+    return axios<any, IRes<ICreateUserBulk>>({
+        method: 'post',
+        url: `/api/v1/user/bulk-create`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+        data: data
+    })
 }
 
 export const callUpdateUser = (_id: string | undefined,
@@ -58,8 +73,15 @@ export const callUpdateUser = (_id: string | undefined,
     });
 }
 
-export const callDeleteUser = (id: string) => {
-    return axios.delete(`/api/v1/user/${id}`);
+export const callDeleteUser = (id: string, access_token: string) => {
+    // return axios.delete(`/api/v1/user/${id}`);
+    return axios<any, IRes<IUser>>({
+        method: 'delete',
+        url: `/api/v1/user/${id}`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
 export const callGetBookWithPaginate = (query: string) => {

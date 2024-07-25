@@ -38,6 +38,11 @@ declare global {
             "id": string;
         }
     }
+    interface IRegister {
+        "_id": string;
+        "email": string;
+        "fullName": string;
+    }
     interface IUserInfo {
         "email": string;
         "phone": string;
@@ -119,5 +124,65 @@ declare global {
     interface IDashBoard {
         "countOrder": number;
         "countUser": number;
+    }
+    interface IUserForAdmin {
+        "_id": string;
+        "fullName": string;
+        "email": string;
+        "phone": string;
+        "role": string;
+        "avatar": string;
+        "isActive": boolean;
+        "createdAt": string;
+        "updatedAt": string;
+        "__v": number;
+    }
+    interface ICreateUserBulk {
+        "countSuccess": number;
+        "countError": number;
+        "detail": {
+            "ok": number;
+            "writeErrors": [
+                {
+                    "err": {
+                        "index": number;
+                        "code": number;
+                        "errmsg": string;
+                        "op": {
+                            "fullName": string;
+                            "password": string;
+                            "email": string;
+                            "phone": string;
+                            "role": string;
+                            "avatar": string;
+                            "createdAt": string;
+                            "updatedAt": string;
+                            "_id": string;
+                            "__v": number;
+                        }
+                    },
+                    "index": number;
+                },
+            ],
+            "writeConcernErrors": [],
+            "insertedIds": [
+                {
+                    "index": number;
+                    "_id": string;
+                },
+            ],
+            "nInserted": number;
+            "nUpserted": number;
+            "nMatched": number;
+            "nModified": number;
+            "nRemoved": number;
+            "upserted": [],
+            "opTime": {
+                "ts": {
+                    "$timestamp": string;
+                },
+                "t": number;
+            }
+        }
     }
 }

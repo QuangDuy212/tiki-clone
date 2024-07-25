@@ -60,31 +60,56 @@ const AppHeader = () => {
 
     const items: MenuProps['items'] = [
         {
-            key: '1',
+            key: 'account',
             label: (
                 <span onClick={() => { router.push("/customer/account"); setActivePage("customer") }}>Thông tin tài khoản</span>
             ),
         },
         {
-            key: '2',
+            key: 'order',
             label: (
                 <span onClick={() => { router.push("/customer/order") }}>Đơn hàng của tôi</span>
             ),
         },
         {
-            key: '3',
+            key: 'help-center',
             label: (
                 <span onClick={() => { router.push("/customer/help-center") }}>Trung tâm hỗ trợ</span>
             ),
         },
         {
-            key: '4',
+            key: 'logout',
             label: (
                 <span onClick={() => handleLogOut()}>Đăng xuất </span>
             ),
         },
-
     ];
+    if (session?.user.role === 'ADMIN' && window.location.pathname.startsWith('/admin')) {
+        const tmp = {
+            label: <span onClick={() => { router.push("/admin") }}>Trang quản trị</span>,
+            key: 'admin'
+        }
+        if (items.includes(tmp)) {
+            items.filter(item => item != tmp)
+        }
+        items.unshift({
+            label: <span onClick={() => { router.push("/") }}>Trang chủ</span>,
+            key: 'home'
+        })
+    }
+    else if (session?.user.role === 'ADMIN') {
+        const tmp = {
+            label: <span onClick={() => { router.push("/") }}>Trang chủ</span>,
+            key: 'home'
+        }
+        if (items.includes(tmp)) {
+            items.filter(item => item != tmp)
+        }
+        items.unshift({
+            label: <span onClick={() => { router.push("/admin") }}>Trang quản trị</span>,
+            key: 'home'
+        })
+    }
 
     //METHODS: 
     useEffect(() => {
@@ -103,13 +128,10 @@ const AppHeader = () => {
 
 
     const handleLogOut = async () => {
-        const res = await callLogout(session?.access_token as string);
-        if (res?.data) {
-            signOut({ redirect: false })
-            router.push("/")
-            toast.success("Log out success!");
-            localStorage.removeItem("access_token");
-        }
+        signOut({ redirect: false })
+        router.push("/")
+        toast.success("Log out success!");
+        localStorage.removeItem("access_token");
     }
 
     //drawer show methods:

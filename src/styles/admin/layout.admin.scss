@@ -1,0 +1,51 @@
+.title {
+    font-size: 20px;
+}
+
+.admin-left {
+    margin-top: 70px;
+    height    : calc(100vh - 70px);
+}
+
+.admin-header {
+    position        : fixed;
+    display         : flex;
+    justify-content : space-between;
+    align-items     : center;
+    background-color: #fff;
+    box-shadow      : 1px 1px #ccc;
+    z-index         : 1000;
+    right           : 0;
+    left            : 0;
+}
+
+.nav-btn {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    font-size      : 14px;
+    border-radius  : 10px;
+    cursor         : pointer;
+
+    &__content {
+        &--icon {
+            font-size      : 24px;
+            margin-right   : 5px;
+            display        : flex;
+            justify-content: center;
+            align-items    : center;
+        }
+
+        &--name {
+            font-size: 14px;
+        }
+    }
+
+    // &:hover {
+    //     background-color: rgba(39, 39, 42, 0.12);
+    // }
+
+    &.active {
+        color: rgb(10, 104, 255);
+    }
+}

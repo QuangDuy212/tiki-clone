@@ -119,7 +119,7 @@ const OrderCartPage = () => {
                                                                 <Col className="product__name " xl={8} md={8} sm={12} xs={12}>
                                                                     {truncate(item.detail.mainText, 20)}
                                                                 </Col>
-                                                                <Col className="product__price " xl={3} md={0} sm={0} xs={0}>
+                                                                <Col className={!isMobile ? "flex-full product__price" : "product__price"} xl={3} md={0} sm={0} xs={0}>
                                                                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.detail.price)}
                                                                 </Col>
                                                                 <Col className="product__quantity flex-full" xl={3} md={3} sm={6} xs={6}>

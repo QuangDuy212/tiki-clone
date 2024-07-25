@@ -168,8 +168,15 @@ export const callChangePassword = (email: string, oldpass: string, newpass: stri
     });
 }
 
-export const callGetDashBoard = () => {
-    return axios.get(`/api/v1/database/dashboard`);
+export const callGetDashBoard = (access_token: string) => {
+    // return axios.get(`/api/v1/database/dashboard`);
+    return axios<any, IRes<IDashBoard>>({
+        method: 'get',
+        url: '/api/v1/database/dashboard',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
 export const callGetListOrder = (current: number, pageSize: number, access_token: string) => {

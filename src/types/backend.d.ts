@@ -116,4 +116,8 @@ declare global {
         "totalPrice": number;
         "detail": IBookDetail[]
     }
+    interface IDashBoard {
+        "countOrder": number;
+        "countUser": number;
+    }
 }

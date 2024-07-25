@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AppFooter from "src/components/Footer/app.footer";
 import AppHeader from "src/components/Header/app.header";
-import { ProtectedRoute } from "src/components/ProtectedRoute/protected.route";
 import AntdStyledComponentsRegistry from "src/lib/AntdStyledComponentsRegistry ";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,9 +19,7 @@ export default function RootLayout({
   return (
     <>
       <AppHeader />
-      <ProtectedRoute>
-        {children}
-      </ProtectedRoute>
+      {children}
       <AppFooter />
     </>
   );

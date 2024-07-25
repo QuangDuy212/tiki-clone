@@ -20,9 +20,7 @@ export default function RootLayout({
   return (
     <>
       <AppHeader />
-      <ProtectedRoute>
-        {children}
-      </ProtectedRoute>
+      {children}
       <AppFooter />
     </>
   );

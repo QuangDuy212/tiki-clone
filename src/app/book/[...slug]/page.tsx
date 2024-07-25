@@ -6,7 +6,6 @@ import { callGetBookById } from "src/services/api";
 const BookDetailPage = async ({ params }: { params: { slug: string } }) => {
 
     //PROPS:
-    console.log(">>> check params: ", params);
 
     //METHODS: 
     params.slug = params.slug + '';

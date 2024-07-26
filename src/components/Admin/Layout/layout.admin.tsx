@@ -16,6 +16,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import '../../../styles/admin/layout.admin.scss'
+import { usePathname } from 'next/navigation'
 
 const { Header, Sider, Content } = Layout;
 
@@ -33,7 +34,8 @@ const LayoutAdmin = ({
     } = theme.useToken();
     const { data: session } = useSession();
     const router = useRouter();
-    const location = window.location
+
+    const pathname = usePathname()
     const items: MenuProps['items'] = [
         {
             key: '1',
@@ -114,7 +116,7 @@ const LayoutAdmin = ({
                     title='Admin'
                     theme="light"
                     mode="inline"
-                    selectedKeys={[location.pathname]}
+                    selectedKeys={[pathname]}
                     items={[
                         {
                             key: '/admin',

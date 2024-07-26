@@ -185,4 +185,8 @@ declare global {
             }
         }
     }
+    interface IDeleteBook {
+        "acknowledged": boolean;
+        "deletedCount": number;
+    }
 }

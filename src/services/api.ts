@@ -84,15 +84,22 @@ export const callDeleteUser = (id: string, access_token: string) => {
     });
 }
 
-export const callGetBookWithPaginate = (query: string) => {
-    return axios.get<IRes<IModelPaginate<IBook>>, IRes<IModelPaginate<IBook>>>(`/api/v1/book${query}`);
+export const callGetBookWithPaginate = (query: string, access_token: string) => {
+    // return axios.get<IRes<IModelPaginate<IBook>>, IRes<IModelPaginate<IBook>>>(`/api/v1/book${query}`);
+    return axios<any, IRes<IModelPaginate<IBook>>>({
+        method: 'get',
+        url: `/api/v1/book${query}`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
 export const callFetchCategory = () => {
-    return axios.get(`/api/v1/database/category`);
+    return axios.get<any, IRes<string[]>>(`/api/v1/database/category`);
 }
 
-export const callUploadBookImg = (fileImg: RcFile | string | Blob) => {
+export const callUploadBookImg = (fileImg: RcFile | string | Blob, access_token: string) => {
     const bodyFormData = new FormData();
     bodyFormData.append('fileImg', fileImg);
     return axios({
@@ -101,23 +108,48 @@ export const callUploadBookImg = (fileImg: RcFile | string | Blob) => {
         data: bodyFormData,
         headers: {
             "Content-Type": "multipart/form-data",
-            "upload-type": "book"
+            "upload-type": "book",
+            'Authorization': `Bearer ${access_token}`,
         },
     });
 }
 
-export const callCreateABook = (data: IBook) => {
-    return axios.post('/api/v1/book', data);
+export const callCreateABook = (data: { mainText: string, author: string, price: number, sold: number, quantity: number, category: string },
+    access_token: string) => {
+    // return axios.post('/api/v1/book', data);
+    return axios<any, IRes<IBook>>({
+        method: 'post',
+        url: '/api/v1/book',
+        data: data,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
 export const callUpdateABook = (_id: string, mainText: string,
-    thumbnail: string, slider: string, author: string,
-    price: number, quantity: number, category: string) => {
-    return axios.put(`/api/v1/book/${_id}`, { mainText, thumbnail, slider, author, price, quantity, category });
+    thumbnail: string[], slider: string[], author: string,
+    price: number, quantity: number, category: string, access_token: string) => {
+    // return axios.put(`/api/v1/book/${_id}`, { mainText, thumbnail, slider, author, price, quantity, category });
+    return axios<any, IRes<IUser>>({
+        method: 'put',
+        url: `/api/v1/book/${_id}`,
+        data: { mainText, thumbnail, slider, author, price, quantity, category },
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
-export const callDeleteABook = (id: string) => {
-    return axios.delete(`/api/v1/book/${id}`);
+export const callDeleteABook = (id: string, access_token: string) => {
+    // return axios.delete(`/api/v1/book/${id}`);
+    return axios<any, IRes<IDeleteBook>>({
+        method: 'delete',
+        url: `/api/v1/book/${id}`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
+    });
 }
 
 export const callGetBookById = (id: string) => {
@@ -213,5 +245,15 @@ export const callGetListOrder = (current: number, pageSize: number, access_token
             current: current,
             pageSize: pageSize
         }
+    });
+}
+export const callGetListOrderWithQuery = (query: string, access_token: string) => {
+    // return axios.get(`/api/v1/order?current=${current}&pageSize=${pageSize}`);
+    return axios<any, IRes<IModelPaginate<IOrder<IBookDetail>>>>({
+        method: 'get',
+        url: `/api/v1/order${query}`,
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+        },
     });
 }
